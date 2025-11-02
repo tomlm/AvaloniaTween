@@ -7,7 +7,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace AvaloniaTweener.Controls
+namespace AvaloniaTweener
 {
     /// <summary>
     /// Defines an animation that can be used as a XAML resource
@@ -68,7 +68,7 @@ namespace AvaloniaTweener.Controls
             if (string.IsNullOrEmpty(Name))
                 throw new InvalidOperationException("Animation must have a Name to be registered.");
 
-            Animator.Register(Name, builder => Apply(builder));
+            Tweener.Register(Name, builder => Apply(builder));
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace AvaloniaTweener.Controls
             if (string.IsNullOrEmpty(Selector))
                 throw new InvalidOperationException("Animation must have a Selector to start.");
 
-            var builder = Animator.Select(Selector, root);
+            var builder = Tweener.Select(Selector, root);
             Apply(builder);
             return builder;
         }

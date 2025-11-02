@@ -2,51 +2,52 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using System;
+using System.Collections.Generic;
 
-namespace AvaloniaTweener.Controls
+namespace AvaloniaTweener
 {
     /// <summary>
     /// Attached properties for applying animations in XAML
     /// </summary>
-    public static class Reanimator
+    public static class Tweener
     {
         /// <summary>
         /// Attach an AnimationResource to be played on load
         /// </summary>
         public static readonly AttachedProperty<AnimationResource?> OnLoadResourceProperty =
-            AvaloniaProperty.RegisterAttached<Control, AnimationResource?>("OnLoadResource", typeof(Reanimator));
+            AvaloniaProperty.RegisterAttached<Control, AnimationResource?>("OnLoadResource", typeof(Tweener));
 
         /// <summary>
         /// Play a named animation on load
         /// </summary>
         public static readonly AttachedProperty<string?> OnLoadProperty =
-            AvaloniaProperty.RegisterAttached<Control, string?>("OnLoad", typeof(Reanimator));
+            AvaloniaProperty.RegisterAttached<Control, string?>("OnLoad", typeof(Tweener));
 
         /// <summary>
         /// Apply a tween string on load (e.g., "opacity:0->1@500ms")
         /// </summary>
         public static readonly AttachedProperty<string?> AnimateProperty =
-            AvaloniaProperty.RegisterAttached<Control, string?>("Animate", typeof(Reanimator));
+            AvaloniaProperty.RegisterAttached<Control, string?>("Animate", typeof(Tweener));
 
         /// <summary>
         /// Apply a tween string on click (e.g., "opacity:0->1@500ms")
         /// </summary>
         public static readonly AttachedProperty<string?> OnClickProperty =
-            AvaloniaProperty.RegisterAttached<Control, string?>("OnClick", typeof(Reanimator));
+            AvaloniaProperty.RegisterAttached<Control, string?>("OnClick", typeof(Tweener));
 
         /// <summary>
         /// Attach an event name to trigger animation
         /// </summary>
         public static readonly AttachedProperty<string?> OnProperty =
-            AvaloniaProperty.RegisterAttached<Control, string?>("On", typeof(Reanimator));
+            AvaloniaProperty.RegisterAttached<Control, string?>("On", typeof(Tweener));
 
         /// <summary>
         /// The animation resource to use with the On event
         /// </summary>
         public static readonly AttachedProperty<AnimationResource?> AnimationProperty =
-            AvaloniaProperty.RegisterAttached<Control, AnimationResource?>("Animation", typeof(Reanimator));
+            AvaloniaProperty.RegisterAttached<Control, AnimationResource?>("Animation", typeof(Tweener));
 
-        static Reanimator()
+        static Tweener()
         {
             OnLoadResourceProperty.Changed.AddClassHandler<Control>(OnLoadResourceChanged);
             OnLoadProperty.Changed.AddClassHandler<Control>(OnLoadChanged);
@@ -109,7 +110,7 @@ namespace AvaloniaTweener.Controls
             {
                 control.Loaded += async (s, args) =>
                 {
-                    var builder = Animator.Select(control.Name ?? control.GetType().Name, control);
+                    var builder = Tweener.Select(control.Name ?? control.GetType().Name, control);
                     builder.Play(animationName);
                     await builder.StartAsync();
                 };
@@ -161,6 +162,33 @@ namespace AvaloniaTweener.Controls
                     });
                 }
             }
+        }
+
+        public static SelectorAnimationBuilder Select(string selector, Visual root)
+        {
+            var targets = SelectorResolver.Resolve(selector, root);
+            return new SelectorAnimationBuilder(targets);
+        }
+
+        public static SelectorAnimationBuilder Select(Visual target)
+        {
+            var targets = new List<Visual> { target };
+            return new SelectorAnimationBuilder(targets);
+        }
+
+        public static void Register(string name, Action<SelectorAnimationBuilder> configure)
+        {
+            AnimatorRegistry.Register(name, configure);
+        }
+
+        public static void Unregister(string name)
+        {
+            AnimatorRegistry.Unregister(name);
+        }
+
+        public static Timeline CreateTimeline()
+        {
+            return new Timeline();
         }
     }
 }

@@ -17,7 +17,7 @@ namespace AvaloniaTweener.Tests
         {
             // Arrange
             var button = new Button();
-            var builder = Animator.Select(button);
+            var builder = Tweener.Select(button);
 
             // Act
             builder.Animate(Visual.OpacityProperty)
@@ -34,7 +34,7 @@ namespace AvaloniaTweener.Tests
         {
             // Arrange
             var button = new Button();
-            var builder = Animator.Select(button);
+            var builder = Tweener.Select(button);
             PropertyAnimationTrack? track = null;
 
             // Act
@@ -68,7 +68,7 @@ namespace AvaloniaTweener.Tests
         {
             // Arrange
             var button = new Button();
-            var builder = Animator.Select(button);
+            var builder = Tweener.Select(button);
 
             // Act
             builder.Animate(Visual.OpacityProperty)
@@ -95,7 +95,7 @@ namespace AvaloniaTweener.Tests
         {
             // Arrange
             var button = new Button();
-            var builder = Animator.Select(button);
+            var builder = Tweener.Select(button);
 
             // Act
             builder.Animate(Visual.OpacityProperty)
@@ -120,7 +120,7 @@ namespace AvaloniaTweener.Tests
         {
             // Arrange
             var button = new Button();
-            var builder = Animator.Select(button);
+            var builder = Tweener.Select(button);
 
             // Act
             builder.Animate(Visual.OpacityProperty)
@@ -145,7 +145,7 @@ namespace AvaloniaTweener.Tests
         {
             // Arrange
             var button = new Button();
-            var builder = Animator.Select(button);
+            var builder = Tweener.Select(button);
 
             // Act
             builder.Animate(Visual.OpacityProperty)
@@ -170,7 +170,7 @@ namespace AvaloniaTweener.Tests
         {
             // Arrange
             var button = new Button();
-            var builder = Animator.Select(button);
+            var builder = Tweener.Select(button);
 
             // Act
             builder.Animate(Visual.OpacityProperty)
@@ -195,7 +195,7 @@ namespace AvaloniaTweener.Tests
         {
             // Arrange
             var button = new Button();
-            var builder = Animator.Select(button);
+            var builder = Tweener.Select(button);
 
             // Act
             builder.Animate(Visual.OpacityProperty)
@@ -223,7 +223,7 @@ namespace AvaloniaTweener.Tests
         {
             // Arrange
             var button = new Button();
-            var builder = Animator.Select(button);
+            var builder = Tweener.Select(button);
 
             // Act
             builder.Animate(Visual.OpacityProperty)
@@ -267,7 +267,7 @@ namespace AvaloniaTweener.Tests
         {
             // Arrange
             var button = new Button();
-            var builder = Animator.Select(button);
+            var builder = Tweener.Select(button);
 
             // Act
             builder.Animate(Visual.OpacityProperty)
@@ -293,7 +293,7 @@ namespace AvaloniaTweener.Tests
         {
             // Arrange
             var button = new Button();
-            var builder = Animator.Select(button);
+            var builder = Tweener.Select(button);
 
             // Act
             builder.Animate(Visual.OpacityProperty)
@@ -318,7 +318,7 @@ namespace AvaloniaTweener.Tests
         {
             // Arrange
             var button = new Button();
-            var builder = Animator.Select(button);
+            var builder = Tweener.Select(button);
 
             // Act
             builder.Animate(Visual.OpacityProperty)
@@ -344,7 +344,7 @@ namespace AvaloniaTweener.Tests
         {
             // Arrange
             var button = new Button();
-            var builder = Animator.Select(button);
+            var builder = Tweener.Select(button);
             var onStartCalled = false;
             var onCompleteCalled = false;
             var onUpdateCalled = false;
@@ -392,7 +392,7 @@ namespace AvaloniaTweener.Tests
         {
             // Arrange
             var button = new Button();
-            var builder = Animator.Select(button);
+            var builder = Tweener.Select(button);
 
             // Act
             builder.Animate(Visual.OpacityProperty)
@@ -420,7 +420,7 @@ namespace AvaloniaTweener.Tests
         {
             // Arrange
             var button = new Button();
-            var builder = Animator.Select(button);
+            var builder = Tweener.Select(button);
             var easing = new BounceEaseOut();
 
             // Act
@@ -449,7 +449,7 @@ namespace AvaloniaTweener.Tests
         {
             // Arrange
             var button = new Button();
-            var builder = Animator.Select(button);
+            var builder = Tweener.Select(button);
 
             // Act
             builder.Animate(Visual.OpacityProperty)
@@ -477,7 +477,7 @@ namespace AvaloniaTweener.Tests
         {
             // Arrange
             var button = new Button();
-            var builder = Animator.Select(button);
+            var builder = Tweener.Select(button);
 
             // Act
             builder.Animate(Visual.OpacityProperty)

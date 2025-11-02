@@ -18,7 +18,7 @@ namespace AvaloniaTweener.Demo
             InitializeComponent();
             
             // Register a named animation
-            Animator.Register("fadeIn", builder =>
+            Tweener.Register("fadeIn", builder =>
             {
                 builder.Animate(Visual.OpacityProperty)
                     .FromTo(0.0, 1.0, TimeSpan.FromSeconds(0.5))
@@ -28,7 +28,7 @@ namespace AvaloniaTweener.Demo
 
         private void AnimateButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            var tb = Animator.Select("TextBlock", this)
+            var tb = Tweener.Select("TextBlock", this)
                 .Animate(Canvas.LeftProperty)
                     .From(50.0)
                         .WithDelay(TimeSpan.FromMilliseconds(200))
@@ -46,7 +46,7 @@ namespace AvaloniaTweener.Demo
         private void ResetButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             // Play a named animation
-            var tb = Animator.Select("TextBlock", this);
+            var tb = Tweener.Select("TextBlock", this);
             tb.Play("fadeIn");
             _ = tb.StartAsync();
         }
@@ -54,9 +54,9 @@ namespace AvaloniaTweener.Demo
         private void CueButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             // Use timeline for sequenced animations
-            var timeline = Animator.CreateTimeline()
+            var timeline = Tweener.CreateTimeline()
                 .Add(
-                    Animator.Select("TextBlock", this)
+                    Tweener.Select("TextBlock", this)
                         .Animate(Canvas.LeftProperty)
                             .FromTo(50.0, 360.0, TimeSpan.FromSeconds(1))
                             .WithEasing(new ElasticEaseOut())
@@ -64,7 +64,7 @@ namespace AvaloniaTweener.Demo
                             .Build()
                 )
                 .Add(
-                    Animator.Select("TextBlock", this)
+                    Tweener.Select("TextBlock", this)
                         .Animate(Canvas.LeftProperty)
                             .FromTo(360.0, 200.0, TimeSpan.FromSeconds(1))
                             .WithEasing(new BounceEaseOut())
@@ -84,6 +84,12 @@ namespace AvaloniaTweener.Demo
         private void OnTweenExamplesClick(object? sender, RoutedEventArgs e)
         {
             var window = new TweenExamples();
+            window.Show();
+        }
+
+        private void OnXamlExamplesClick(object? sender, RoutedEventArgs e)
+        {
+            var window = new XamlExamples();
             window.Show();
         }
     }

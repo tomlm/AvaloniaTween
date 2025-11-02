@@ -1,0 +1,263 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:anim="using:AvaloniaTweener"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+        x:Class="AvaloniaTweener.Demo.XamlExamples"
+        Title="XAML Static Resource Animation Examples"
+        Width="800" Height="600">
+
+    <Window.Resources>
+        <!-- Simple fade-in animation -->
+        <anim:AnimationResource x:Key="FadeIn" Selector="Self">
+            <anim:AnimationTrack Property="{x:Static Visual.OpacityProperty}" 
+                                 From="0" To="1" Duration="0:0:0.5">
+                <anim:AnimationTrack.Easing>
+                    <CubicEaseOut/>
+                </anim:AnimationTrack.Easing>
+            </anim:AnimationTrack>
+        </anim:AnimationResource>
+
+        <!-- Bounce scale-in animation -->
+        <anim:AnimationResource x:Key="BounceIn" Selector="Self">
+            <anim:AnimationTrack Property="{x:Static ScaleTransform.ScaleXProperty}" 
+                                 From="0" To="1" Duration="0:0:0.6">
+                <anim:AnimationTrack.Easing>
+                    <BounceEaseOut/>
+                </anim:AnimationTrack.Easing>
+            </anim:AnimationTrack>
+            <anim:AnimationTrack Property="{x:Static ScaleTransform.ScaleYProperty}" 
+                                 From="0" To="1" Duration="0:0:0.6">
+                <anim:AnimationTrack.Easing>
+                    <BounceEaseOut/>
+                </anim:AnimationTrack.Easing>
+            </anim:AnimationTrack>
+        </anim:AnimationResource>
+
+        <!-- Slide from left animation -->
+        <anim:AnimationResource x:Key="SlideFromLeft" Selector="Self">
+            <anim:AnimationTrack Property="{x:Static TranslateTransform.XProperty}" 
+                                 From="-300" To="0" Duration="0:0:0.8">
+                <anim:AnimationTrack.Easing>
+                    <BackEaseOut/>
+                </anim:AnimationTrack.Easing>
+            </anim:AnimationTrack>
+        </anim:AnimationResource>
+
+        <!-- Rotate and scale animation -->
+        <anim:AnimationResource x:Key="RotateAndScale" Selector="Self">
+            <anim:AnimationTrack Property="{x:Static RotateTransform.AngleProperty}" 
+                                 From="0" To="360" Duration="0:0:1">
+                <anim:AnimationTrack.Easing>
+                    <CubicEaseInOut/>
+                </anim:AnimationTrack.Easing>
+            </anim:AnimationTrack>
+            <anim:AnimationTrack Property="{x:Static ScaleTransform.ScaleXProperty}" 
+                                 From="1" To="1.5" Duration="0:0:0.5">
+                <anim:AnimationTrack.Easing>
+                    <QuadraticEaseOut/>
+                </anim:AnimationTrack.Easing>
+            </anim:AnimationTrack>
+            <anim:AnimationTrack Property="{x:Static ScaleTransform.ScaleYProperty}" 
+                                 From="1" To="1.5" Duration="0:0:0.5">
+                <anim:AnimationTrack.Easing>
+                    <QuadraticEaseOut/>
+                </anim:AnimationTrack.Easing>
+            </anim:AnimationTrack>
+        </anim:AnimationResource>
+
+        <!-- Elastic bounce animation -->
+        <anim:AnimationResource x:Key="ElasticBounce" Selector="Self">
+            <anim:AnimationTrack Property="{x:Static TranslateTransform.YProperty}" 
+                                 From="0" To="-50" Duration="0:0:0.6">
+                <anim:AnimationTrack.Easing>
+                    <ElasticEaseOut/>
+                </anim:AnimationTrack.Easing>
+            </anim:AnimationTrack>
+        </anim:AnimationResource>
+
+        <!-- Multi-property slide and fade -->
+        <anim:AnimationResource x:Key="SlideAndFade" Selector="Self">
+            <anim:AnimationTrack Property="{x:Static Canvas.LeftProperty}" 
+                                 From="0" To="300" Duration="0:0:1">
+                <anim:AnimationTrack.Easing>
+                    <ExponentialEaseOut/>
+                </anim:AnimationTrack.Easing>
+            </anim:AnimationTrack>
+            <anim:AnimationTrack Property="{x:Static Visual.OpacityProperty}" 
+                                 From="1" To="0.3" Duration="0:0:1">
+                <anim:AnimationTrack.Easing>
+                    <CubicEaseOut/>
+                </anim:AnimationTrack.Easing>
+            </anim:AnimationTrack>
+        </anim:AnimationResource>
+
+        <!-- Staggered animation with delay -->
+        <anim:AnimationResource x:Key="DelayedFade" Selector="Self" Delay="0:0:0.5">
+            <anim:AnimationTrack Property="{x:Static Visual.OpacityProperty}" 
+                                 From="0" To="1" Duration="0:0:1">
+                <anim:AnimationTrack.Easing>
+                    <SineEaseInOut/>
+                </anim:AnimationTrack.Easing>
+            </anim:AnimationTrack>
+        </anim:AnimationResource>
+
+        <!-- Width expansion animation -->
+        <anim:AnimationResource x:Key="ExpandWidth" Selector="Self">
+            <anim:AnimationTrack Property="{x:Static Layoutable.WidthProperty}" 
+                                 From="100" To="400" Duration="0:0:0.8">
+                <anim:AnimationTrack.Easing>
+                    <BackEaseOut/>
+                </anim:AnimationTrack.Easing>
+            </anim:AnimationTrack>
+        </anim:AnimationResource>
+
+    </Window.Resources>
+
+    <ScrollViewer>
+        <StackPanel Spacing="30" Margin="40">
+            
+            <TextBlock Text="XAML Static Resource Animation Examples" 
+                       FontSize="24" 
+                       FontWeight="Bold"/>
+
+            <TextBlock Text="These animations are defined as StaticResources using AnimationResource and AnimationTrack markup." 
+                       TextWrapping="Wrap"
+                       Foreground="Gray"/>
+
+            <!-- Example 1: Simple Fade In on Click -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="1. Fade In on Click (with CubicEaseOut)" FontWeight="SemiBold"/>
+                <Button Content="Click to Fade In"
+                        Background="ForestGreen"
+                        Foreground="White"
+                        Padding="20,10"
+                        HorizontalAlignment="Left"
+                        anim:Tweener.On="Click"
+                        anim:Tweener.Animation="{StaticResource FadeIn}"
+                        Opacity="0"/>
+            </StackPanel>
+
+            <!-- Example 2: Bounce Scale In on Load -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="2. Bounce Scale In (plays on load)" FontWeight="SemiBold"/>
+                <Border Background="Crimson"
+                        Padding="20,10"
+                        CornerRadius="8"
+                        HorizontalAlignment="Left"
+                        RenderTransformOrigin="0.5,0.5"
+                        anim:Tweener.OnLoadResource="{StaticResource BounceIn}">
+                    <Border.RenderTransform>
+                        <ScaleTransform ScaleX="0" ScaleY="0"/>
+                    </Border.RenderTransform>
+                    <TextBlock Text="This bounces in on load!" 
+                               Foreground="White"/>
+                </Border>
+            </StackPanel>
+
+            <!-- Example 3: Slide from Left on Click -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="3. Slide from Left on Click (BackEaseOut)" FontWeight="SemiBold"/>
+                <Button Content="Click to Slide"
+                        Background="Orange"
+                        Foreground="White"
+                        Padding="20,10"
+                        HorizontalAlignment="Left"
+                        RenderTransformOrigin="0.5,0.5"
+                        anim:Tweener.On="Click"
+                        anim:Tweener.Animation="{StaticResource SlideFromLeft}">
+                    <Button.RenderTransform>
+                        <TranslateTransform X="-300"/>
+                    </Button.RenderTransform>
+                </Button>
+            </StackPanel>
+
+            <!-- Example 4: Rotate and Scale on Click -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="4. Rotate 360° + Scale on Click (Multi-track)" FontWeight="SemiBold"/>
+                <Button Content="Click to Spin and Grow"
+                        Background="Teal"
+                        Foreground="White"
+                        Padding="20,10"
+                        Width="200"
+                        HorizontalAlignment="Left"
+                        RenderTransformOrigin="0.5,0.5"
+                        anim:Tweener.On="Click"
+                        anim:Tweener.Animation="{StaticResource RotateAndScale}">
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="0"/>
+                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
+            </StackPanel>
+
+            <!-- Example 5: Elastic Bounce on Click -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="5. Elastic Bounce Up on Click (ElasticEaseOut)" FontWeight="SemiBold"/>
+                <Button Content="Click to Bounce"
+                        Background="Purple"
+                        Foreground="White"
+                        Padding="20,10"
+                        HorizontalAlignment="Left"
+                        RenderTransformOrigin="0.5,0.5"
+                        anim:Tweener.On="Click"
+                        anim:Tweener.Animation="{StaticResource ElasticBounce}">
+                    <Button.RenderTransform>
+                        <TranslateTransform Y="0"/>
+                    </Button.RenderTransform>
+                </Button>
+            </StackPanel>
+
+            <!-- Example 6: Slide and Fade on Canvas (on load) -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="6. Slide Right + Fade on Load (Canvas position)" FontWeight="SemiBold"/>
+                <Canvas Height="80" Background="#F0F0F0">
+                    <Border Background="DodgerBlue"
+                            Padding="20,10"
+                            CornerRadius="8"
+                            Canvas.Left="0"
+                            anim:Tweener.OnLoadResource="{StaticResource SlideAndFade}">
+                        <TextBlock Text="Sliding and fading..." 
+                                   Foreground="White"/>
+                    </Border>
+                </Canvas>
+            </StackPanel>
+
+            <!-- Example 7: Delayed Fade on Load -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="7. Delayed Fade In on Load (0.5s delay)" FontWeight="SemiBold"/>
+                <Border Background="SeaGreen"
+                        Padding="20,10"
+                        CornerRadius="8"
+                        HorizontalAlignment="Left"
+                        Opacity="0"
+                        anim:Tweener.OnLoadResource="{StaticResource DelayedFade}">
+                    <TextBlock Text="I fade in after a delay!" 
+                               Foreground="White"/>
+                </Border>
+            </StackPanel>
+
+            <!-- Example 8: Width Expansion on Click -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="8. Width Expansion on Click (Layoutable.WidthProperty)" FontWeight="SemiBold"/>
+                <Button Content="Click to Expand Width"
+                        Background="DarkSlateBlue"
+                        Foreground="White"
+                        Padding="20,10"
+                        Width="100"
+                        HorizontalAlignment="Left"
+                        anim:Tweener.On="Click"
+                        anim:Tweener.Animation="{StaticResource ExpandWidth}"/>
+            </StackPanel>
+
+            <TextBlock Text="? All animations above use AnimationResource defined in Window.Resources" 
+                       FontStyle="Italic"
+                       Foreground="Gray"
+                       Margin="0,20,0,0"/>
+
+        </StackPanel>
+    </ScrollViewer>
+</Window>

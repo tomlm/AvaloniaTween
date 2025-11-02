@@ -18,7 +18,7 @@ namespace AvaloniaTweener.Demo
         private async void OnSlideButtonClick(object? sender, RoutedEventArgs e)
         {
             var button = (Button)sender!;
-            await Animator.Select(button)
+            await Tweener.Select(button)
                 .Animate(Button.MarginProperty)
                     .To(new Thickness(100, 0, 0, 0), TimeSpan.FromMilliseconds(1000))
                         .WithEasing(new BackEaseOut())
@@ -29,7 +29,7 @@ namespace AvaloniaTweener.Demo
         private async void OnBounceButtonClick(object? sender, RoutedEventArgs e)
         {
             var button = (Button)sender!;
-            await Animator.Select(button)
+            await Tweener.Select(button)
                 .Animate(TranslateTransform.YProperty)
                     .To(-100.0, TimeSpan.FromMilliseconds(700))
                         .WithEasing(new QuadraticEaseOut())
@@ -42,7 +42,7 @@ namespace AvaloniaTweener.Demo
         private async void OnColorButtonClick(object? sender, RoutedEventArgs e)
         {
             var button = (Button)sender!;
-            await Animator.Select(button)
+            await Tweener.Select(button)
                 .Animate(Button.BackgroundProperty)
                     .WithDelay(TimeSpan.FromSeconds(1))
                     .To(new SolidColorBrush(Colors.Purple), TimeSpan.FromMilliseconds(500))
@@ -54,7 +54,7 @@ namespace AvaloniaTweener.Demo
         private async void OnScaleButtonClick(object? sender, RoutedEventArgs e)
         {
             var button = (Button)sender!;
-            await Animator.Select(button)
+            await Tweener.Select(button)
                 .Animate(ScaleTransform.ScaleXProperty)
                     .To(2.0, TimeSpan.FromMilliseconds(1000))
                         .WithEasing(new BackEaseOut())
@@ -67,7 +67,7 @@ namespace AvaloniaTweener.Demo
         private async void OnRotateButtonClick(object? sender, RoutedEventArgs e)
         {
             var button = (Button)sender!;
-            await Animator.Select(button)
+            await Tweener.Select(button)
                 .Animate(RotateTransform.AngleProperty)
                     .To(360.0, TimeSpan.FromMilliseconds(1000))
                         .WithEasing(new CubicEaseInOut())
@@ -79,7 +79,7 @@ namespace AvaloniaTweener.Demo
         {
             var button = (Button)sender!;
             
-            await Animator.Select(button)
+            await Tweener.Select(button)
                 .Animate(ScaleTransform.ScaleXProperty)
                     .To(2.0, TimeSpan.FromSeconds(1))
                     .To(1.0, TimeSpan.FromSeconds(1))

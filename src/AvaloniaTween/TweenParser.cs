@@ -6,7 +6,7 @@ using Avalonia.Media;
 using System;
 using System.Linq;
 
-namespace AvaloniaTweener.Controls
+namespace AvaloniaTweener
 {
     /// <summary>
     /// Parses compact tween syntax: "opacity:0->1@500ms ease:OutCubic; left:100->200@1s"
@@ -52,7 +52,7 @@ namespace AvaloniaTweener.Controls
                     if (lowerPart == "reset")   
                         track.RestoreOriginalValue = true;
                     else 
-                        track.RestoreOriginalValue = (lowerPart == "reset:true");
+                        track.RestoreOriginalValue = lowerPart == "reset:true";
                     continue;
                 }
 
