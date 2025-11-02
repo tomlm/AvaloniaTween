@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using System;
 
@@ -12,5 +13,6 @@ namespace AvaloniaAnimate
         public TimeSpan Duration = TimeSpan.FromSeconds(1);
         public Easing? Easing = new LinearEasing();
         public bool HasFrom;
+        public FillMode FillMode = FillMode.Forward;
     }
 }

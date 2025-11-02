@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using System;
 using System.Threading.Tasks;
@@ -38,6 +39,18 @@ namespace AvaloniaAnimate
         public PropertyTrackBuilder Ease(Easing easing)
         {
             _track.Easing = easing;
+            return this;
+        }
+
+        public PropertyTrackBuilder FillMode(FillMode fillMode)
+        {
+            _track.FillMode = fillMode;
+            return this;
+        }
+
+        public PropertyTrackBuilder Reset()
+        {
+            _track.FillMode = Avalonia.Animation.FillMode.None;
             return this;
         }
 

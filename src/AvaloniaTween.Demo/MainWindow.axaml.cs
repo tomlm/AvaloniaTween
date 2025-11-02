@@ -1,3 +1,4 @@
+using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Media;
 using AvaloniaAnimate;
@@ -17,10 +18,9 @@ namespace AvaloniaTween.Demo
             var tb = Animator.Select("TextBlock", this)
                 .Animate(Canvas.LeftProperty)
                     .From(50.0).To(200.0).Duration(TimeSpan.FromSeconds(1))
-                //.To(TextBlock.HeightProperty, 150.0, TimeSpan.FromSeconds(1))
-                //.To(TextBlock.OpacityProperty, 0.5, TimeSpan.FromSeconds(1))
                 .Animate(RotateTransform.AngleProperty)
-                    .From(0.0).To(360.0).Duration(TimeSpan.FromSeconds(1));
+                    .From(0.0).To(300.0).Duration(TimeSpan.FromSeconds(1))
+                    .Reset();
             
             _ = tb.StartAsync();
         }

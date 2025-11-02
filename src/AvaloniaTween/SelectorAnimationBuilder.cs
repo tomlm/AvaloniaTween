@@ -41,6 +41,7 @@ namespace AvaloniaAnimate
                     {
                         Duration = track.Duration,
                         Easing = track.Easing ?? new LinearEasing(),
+                        FillMode = track.FillMode,
                         Children =
                         {
                             new KeyFrame
