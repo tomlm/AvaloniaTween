@@ -1,0 +1,115 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:anim="using:AvaloniaTweener.Controls"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AvaloniaTweener.Demo.TweenExamples"
+        Title="XAML Animation Examples"
+        Width="800" Height="600">
+
+    <ScrollViewer>
+        <StackPanel Spacing="30" Margin="40">
+            
+            <TextBlock Text="XAML Animation Examples (Static - On Load)" 
+                       FontSize="24" 
+                       FontWeight="Bold"/>
+
+            <!-- Example 1: Compact inline syntax -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="1. Compact Inline Syntax (Fade In)" FontWeight="SemiBold"/>
+                <Border Background="ForestGreen" 
+                        Padding="20" 
+                        CornerRadius="8"
+                        anim:Reanimator.OnClick="opacity:0->1@1s ease:OutCubic">
+                    <TextBlock Text="Compact syntax animation!" 
+                               Foreground="White" 
+                               HorizontalAlignment="Center"/>
+                </Border>
+            </StackPanel>
+
+            <!-- Example 2: Play named animation on load -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="2. Named Animation (OnLoad)" FontWeight="SemiBold"/>
+                <Border Background="Crimson" 
+                        Padding="20" 
+                        CornerRadius="8"
+                        anim:Reanimator.OnClick="fadeIn">
+                    <TextBlock Text="Playing named 'fadeIn' animation" 
+                               Foreground="White" 
+                               HorizontalAlignment="Center"/>
+                </Border>
+            </StackPanel>
+
+            <!-- Example 3: Multiple properties inline -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="3. Multiple Properties Inline (Slide + Fade)" FontWeight="SemiBold"/>
+                <Canvas Height="100" Background="Transparent">
+                    <Border Background="Orange" 
+                            Padding="20" 
+                            CornerRadius="8"
+                            Canvas.Left="0"
+                            Canvas.Top="0"
+                            anim:Reanimator.OnClick="left:0->300@1s ease:OutElastic; opacity:0->1@1s">
+                        <TextBlock Text="Slide and fade!" 
+                                   Foreground="White"/>
+                    </Border>
+                </Canvas>
+            </StackPanel>
+
+            <!-- Example 4: Scale animation -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="4. Scale Animation" FontWeight="SemiBold"/>
+                <Border Background="Teal" 
+                        Padding="20" 
+                        CornerRadius="8"
+                        Width="150"
+                        HorizontalAlignment="Left"
+                        anim:Reanimator.OnClick="opacity:0->1@1600ms; scalex:0.5->1@600ms ease:OutBack; scaley:0.5->1@600ms ease:OutBack"
+                        RenderTransformOrigin="0.5,0.5">
+                    <Border.RenderTransform>
+                        <ScaleTransform/>
+                    </Border.RenderTransform>
+                    <TextBlock Text="Multi-property!" 
+                               Foreground="White" 
+                               HorizontalAlignment="Center"/>
+                </Border>
+            </StackPanel>
+
+            <!-- Example 5: Rotate animation -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="5. Rotate Animation" FontWeight="SemiBold"/>
+                <Border Background="Purple" 
+                        Padding="20" 
+                        CornerRadius="8"
+                        Width="100"
+                        Height="100"
+                        HorizontalAlignment="Left"
+                        anim:Reanimator.OnClick="angle:0->360@2s ease:Linear; opacity:0->1@500ms"
+                        RenderTransformOrigin="0.5,0.5">
+                    <Border.RenderTransform>
+                        <RotateTransform/>
+                    </Border.RenderTransform>
+                    <TextBlock Text="Spin!" 
+                               Foreground="White" 
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </Border>
+            </StackPanel>
+
+            <!-- Example 6: Delayed animation -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="6. With Delay" FontWeight="SemiBold"/>
+                <Border Background="DodgerBlue" 
+                        Padding="20" 
+                        CornerRadius="8"
+                        anim:Reanimator.OnClick="opacity:0->1@1s delay:1s">
+                    <TextBlock Text="I appear after 1 second!" 
+                               Foreground="White" 
+                               HorizontalAlignment="Center"/>
+                </Border>
+            </StackPanel>
+
+        </StackPanel>
+    </ScrollViewer>
+</Window>

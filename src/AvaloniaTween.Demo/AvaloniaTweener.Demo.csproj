@@ -21,6 +21,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AvaloniaTween\AvaloniaTween.csproj" />
+    <ProjectReference Include="..\AvaloniaTween\AvaloniaTweener.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="CodeExamples.axaml.cs">
+      <DependentUpon>CodeExamples.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="TweenExamples.axaml.cs">
+      <DependentUpon>TweenExamples.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

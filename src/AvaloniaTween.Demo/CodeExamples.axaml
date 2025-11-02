@@ -1,0 +1,106 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AvaloniaTweener.Demo.CodeExamples"
+        Title="Fluent Animation Examples"
+        Width="800" Height="600">
+
+    <ScrollViewer>
+        <StackPanel Spacing="30" Margin="40">
+            
+            <TextBlock Text="Tween Animation Examples (Interactive)" 
+                       FontSize="24" 
+                       FontWeight="Bold"/>
+
+            <!-- Example 1: Slide animation -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="1. Slide with Margin" FontWeight="SemiBold"/>
+                <Button Content="Click to Slide Right"
+                        Background="ForestGreen"
+                        Foreground="White"
+                        Padding="20,10"
+                        HorizontalAlignment="Left"
+                        Click="OnSlideButtonClick"/>
+            </StackPanel>
+
+            <!-- Example 2: Bounce animation -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="2. Bounce with TranslateTransform" FontWeight="SemiBold"/>
+                <Button Content="Click to Bounce"
+                        Background="Crimson"
+                        Foreground="White"
+                        Padding="20,10"
+                        HorizontalAlignment="Left"
+                        Click="OnBounceButtonClick"
+                        RenderTransformOrigin="0.5,0.5">
+                    <Button.RenderTransform>
+                        <TranslateTransform/>
+                    </Button.RenderTransform>
+                </Button>
+            </StackPanel>
+
+            <!-- Example 3: Color animation -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="3. Color Transition" FontWeight="SemiBold"/>
+                <Button Content="Click to Change Colors"
+                        Background="Orange"
+                        Foreground="White"
+                        Padding="20,10"
+                        HorizontalAlignment="Left"
+                        Click="OnColorButtonClick"/>
+            </StackPanel>
+
+            <!-- Example 4: Scale animation -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="4. Scale Animation" FontWeight="SemiBold"/>
+                <Button Content="Click to Scale"
+                        Background="Teal"
+                        Foreground="White"
+                        Padding="20,10"
+                        HorizontalAlignment="Left"
+                        Click="OnScaleButtonClick"
+                        RenderTransformOrigin="0.5,0.5">
+                    <Button.RenderTransform>
+                        <ScaleTransform/>
+                    </Button.RenderTransform>
+                </Button>
+            </StackPanel>
+
+            <!-- Example 5: Rotate animation -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="5. Rotate Animation" FontWeight="SemiBold"/>
+                <Button Content="Click to Rotate"
+                        Background="Purple"
+                        Foreground="White"
+                        Padding="20,10"
+                        Width="150"
+                        HorizontalAlignment="Left"
+                        Click="OnRotateButtonClick"
+                        RenderTransformOrigin="0.5,0.5">
+                    <Button.RenderTransform>
+                        <RotateTransform/>
+                    </Button.RenderTransform>
+                </Button>
+            </StackPanel>
+
+            <!-- Example 6: Multi-property animation -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="6. Multiple Properties (Scale + Color)" FontWeight="SemiBold"/>
+                <Button Content="Click for Multi-Animation"
+                        Background="DodgerBlue"
+                        Foreground="White"
+                        Padding="20,10"
+                        HorizontalAlignment="Left"
+                        Click="OnMultiButtonClick"
+                        RenderTransformOrigin="0.5,0.5">
+                    <Button.RenderTransform>
+                        <ScaleTransform/>
+                    </Button.RenderTransform>
+                </Button>
+            </StackPanel>
+
+        </StackPanel>
+    </ScrollViewer>
+</Window>

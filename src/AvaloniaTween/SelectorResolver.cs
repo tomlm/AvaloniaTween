@@ -4,7 +4,7 @@ using Avalonia.VisualTree;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AvaloniaAnimate
+namespace AvaloniaTweener
 {
     public static class SelectorResolver
     {

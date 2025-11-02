@@ -3,12 +3,13 @@ using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Media;
-using AvaloniaAnimate;
+using AvaloniaTweener;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Avalonia.Interactivity;
 
-namespace AvaloniaTween.Demo
+namespace AvaloniaTweener.Demo
 {
     public partial class MainWindow : Window
     {
@@ -72,6 +73,18 @@ namespace AvaloniaTween.Demo
                 );
 
             _ = timeline.StartAsync();
+        }
+
+        private void OnCodeExamplesClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            var window = new CodeExamples();
+            window.Show();
+        }
+
+        private void OnTweenExamplesClick(object? sender, RoutedEventArgs e)
+        {
+            var window = new TweenExamples();
+            window.Show();
         }
     }
 }

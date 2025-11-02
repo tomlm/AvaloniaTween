@@ -1,6 +1,6 @@
 using System;
 
-namespace AvaloniaAnimate
+namespace AvaloniaTweener
 {
     public class KeyFrameBuilder
     {

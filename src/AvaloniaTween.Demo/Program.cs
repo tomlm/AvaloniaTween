@@ -1,7 +1,7 @@
 ﻿using System;
 using Avalonia;
 
-namespace AvaloniaTween.Demo
+namespace AvaloniaTweener.Demo
 {
     internal class Program
     {

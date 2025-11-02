@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AvaloniaAnimate
+namespace AvaloniaTweener
 {
     public static class AnimatorRegistry
     {

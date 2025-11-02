@@ -1,7 +1,7 @@
 using Avalonia.Animation.Easings;
 using System;
 
-namespace AvaloniaAnimate
+namespace AvaloniaTweener
 {
     public static class AnimatorDefaults
     {

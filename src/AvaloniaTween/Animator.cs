@@ -1,13 +1,20 @@
 ﻿using Avalonia;
 using System;
+using System.Collections.Generic;
 
-namespace AvaloniaAnimate
+namespace AvaloniaTweener
 {
     public static class Animator
     {
         public static SelectorAnimationBuilder Select(string selector, Visual root)
         {
             var targets = SelectorResolver.Resolve(selector, root);
+            return new SelectorAnimationBuilder(targets);
+        }
+
+        public static SelectorAnimationBuilder Select(Visual target)
+        {
+            var targets = new List<Visual> { target };
             return new SelectorAnimationBuilder(targets);
         }
 

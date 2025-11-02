@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AvaloniaAnimate
+namespace AvaloniaTweener
 {
     public class Timeline
     {
