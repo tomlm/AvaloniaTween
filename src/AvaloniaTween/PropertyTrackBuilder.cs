@@ -10,6 +10,7 @@ namespace AvaloniaAnimate
     {
         private readonly SelectorAnimationBuilder _parent;
         private readonly PropertyAnimationTrack _track;
+        private KeyFrameDefinition? _currentKeyFrame;
 
         public PropertyTrackBuilder(SelectorAnimationBuilder parent, PropertyAnimationTrack track)
         {
@@ -17,28 +18,54 @@ namespace AvaloniaAnimate
             _track = track;
         }
 
+        // From sets keyframe at 0%
         public PropertyTrackBuilder From<T>(T value)
         {
-            _track.From = value;
-            _track.HasFrom = true;
+            // Initialize keyframes list if first time
+            _track.KeyFrames ??= new();
+
+            _currentKeyFrame = new KeyFrameDefinition { Cue = 0.0, Value = value };
+            _track.KeyFrames.Add(_currentKeyFrame);
             return this;
         }
 
-        public PropertyTrackBuilder To<T>(T value)
+        // To with duration, defaults to cue 1.0 (100%)
+        public PropertyTrackBuilder To<T>(T value, TimeSpan duration)
         {
-            _track.To = value;
+            return To(value, duration, 1.0);
+        }
+
+        // To with cue and duration
+        public PropertyTrackBuilder To<T>(T value, TimeSpan duration, double cue)
+        {
+            if (cue < 0.0 || cue > 1.0)
+                throw new ArgumentOutOfRangeException(nameof(cue), "Cue must be between 0.0 and 1.0");
+
+            // Initialize keyframes list if first time
+            _track.KeyFrames ??= new();
+
+            _currentKeyFrame = new KeyFrameDefinition
+            {
+                Cue = cue,
+                Value = value,
+                Duration = duration
+            };
+            _track.KeyFrames.Add(_currentKeyFrame);
             return this;
         }
 
-        public PropertyTrackBuilder Duration(TimeSpan duration)
+        // Easing applies to the segment leading to the current keyframe
+        public PropertyTrackBuilder WithEasing(Easing easing)
         {
-            _track.Duration = duration;
-            return this;
-        }
-
-        public PropertyTrackBuilder Ease(Easing easing)
-        {
-            _track.Easing = easing;
+            if (_currentKeyFrame != null)
+            {
+                _currentKeyFrame.Easing = easing;
+            }
+            else
+            {
+                // Fallback: applies to whole animation if no keyframes yet
+                _track.Easing = easing;
+            }
             return this;
         }
 

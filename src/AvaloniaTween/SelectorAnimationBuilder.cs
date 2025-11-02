@@ -37,29 +37,38 @@ namespace AvaloniaAnimate
             {
                 foreach (var track in _tracks)
                 {
+                    if (!track.UseKeyFrames)
+                    {
+                        throw new InvalidOperationException("Animation track must have keyframes. Use .From() and .To() to define the animation.");
+                    }
+
+                    // Sort keyframes by cue
+                    var sortedKeyFrames = track.KeyFrames!.OrderBy(kf => kf.Cue).ToList();
+                    
+                    // Calculate total duration from segments
+                    var totalDuration = sortedKeyFrames
+                        .Where(kf => kf.Duration.HasValue)
+                        .Select(kf => kf.Duration!.Value)
+                        .Aggregate(TimeSpan.Zero, (sum, d) => sum + d);
+
+                    if (totalDuration == TimeSpan.Zero)
+                        totalDuration = track.Duration; // Fallback to track duration
+
                     var animation = new Animation
                     {
-                        Duration = track.Duration,
-                        Easing = track.Easing ?? new LinearEasing(),
-                        FillMode = track.FillMode,
-                        Children =
-                        {
-                            new KeyFrame
-                            {
-                                Cue = new Cue(0d),
-                                Setters = {
-                                    new Setter(track.Property, track.HasFrom ? track.From : target.GetValue(track.Property))
-                                }
-                            },
-                            new KeyFrame
-                            {
-                                Cue = new Cue(1d),
-                                Setters = {
-                                    new Setter(track.Property, track.To)
-                                }
-                            }
-                        }
+                        Duration = totalDuration,
+                        FillMode = track.FillMode
                     };
+
+                    // Add keyframes
+                    foreach (var kf in sortedKeyFrames)
+                    {
+                        animation.Children.Add(new KeyFrame
+                        {
+                            Cue = new Cue(kf.Cue),
+                            Setters = { new Setter(track.Property, kf.Value) }
+                        });
+                    }
 
                     tasks.Add(animation.RunAsync(target, _cancellationTokenSource.Token));
                 }

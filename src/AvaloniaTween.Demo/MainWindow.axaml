@@ -8,6 +8,7 @@
 	<Grid RowDefinitions="Auto,*" Margin="10">
 		<StackPanel Orientation="Horizontal" Spacing="10">
 			<Button x:Name="AnimateButton" Content="Animate" Click="AnimateButton_Click"/>
+			<Button x:Name="CueButton" Content="Cue" Click="CueButton_Click"/>
 			<Button x:Name="ResetButton" Content="Reset" Click="ResetButton_Click"/>
 		</StackPanel>
 
