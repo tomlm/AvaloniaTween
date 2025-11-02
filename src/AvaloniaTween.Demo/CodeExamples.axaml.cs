@@ -20,8 +20,9 @@ namespace AvaloniaTweener.Demo
             var button = (Button)sender!;
             await Animator.Select(button)
                 .Animate(Button.MarginProperty)
-                .To(new Thickness(200, 0, 0, 0), TimeSpan.FromMilliseconds(800))
-                .WithEasing(new BackEaseOut())
+                    .To(new Thickness(100, 0, 0, 0), TimeSpan.FromMilliseconds(1000))
+                        .WithEasing(new BackEaseOut())
+                    .Reset()
                 .StartAsync();
         }
 
@@ -30,10 +31,11 @@ namespace AvaloniaTweener.Demo
             var button = (Button)sender!;
             await Animator.Select(button)
                 .Animate(TranslateTransform.YProperty)
-                .To(-50.0, TimeSpan.FromMilliseconds(400))
-                .WithEasing(new QuadraticEaseOut())
-                .To(0.0, TimeSpan.FromMilliseconds(400))
-                .WithEasing(new BounceEaseOut())
+                    .To(-100.0, TimeSpan.FromMilliseconds(700))
+                        .WithEasing(new QuadraticEaseOut())
+                    .To(0.0, TimeSpan.FromMilliseconds(700))
+                        .WithEasing(new BounceEaseOut())
+                    .Reset()
                 .StartAsync();
         }
 
@@ -42,9 +44,10 @@ namespace AvaloniaTweener.Demo
             var button = (Button)sender!;
             await Animator.Select(button)
                 .Animate(Button.BackgroundProperty)
-                .To(new SolidColorBrush(Colors.Purple), TimeSpan.FromMilliseconds(500))
-                .To(new SolidColorBrush(Colors.Orange), TimeSpan.FromMilliseconds(500))
-                .To(new SolidColorBrush(Colors.Teal), TimeSpan.FromMilliseconds(500))
+                    .WithDelay(TimeSpan.FromSeconds(1))
+                    .To(new SolidColorBrush(Colors.Purple), TimeSpan.FromMilliseconds(500))
+                    .To(new SolidColorBrush(Colors.Orange), TimeSpan.FromMilliseconds(500))
+                    .To(new SolidColorBrush(Colors.Teal), TimeSpan.FromMilliseconds(500))
                 .StartAsync();
         }
 
@@ -53,10 +56,11 @@ namespace AvaloniaTweener.Demo
             var button = (Button)sender!;
             await Animator.Select(button)
                 .Animate(ScaleTransform.ScaleXProperty)
-                .To(1.5, TimeSpan.FromMilliseconds(300))
-                .WithEasing(new BackEaseOut())
-                .To(1.0, TimeSpan.FromMilliseconds(300))
-                .WithEasing(new ElasticEaseOut())
+                    .To(2.0, TimeSpan.FromMilliseconds(1000))
+                        .WithEasing(new BackEaseOut())
+                    .To(1.0, TimeSpan.FromMilliseconds(1000))
+                        .WithEasing(new ElasticEaseOut())
+                    .Reset()
                 .StartAsync();
         }
 
@@ -65,8 +69,9 @@ namespace AvaloniaTweener.Demo
             var button = (Button)sender!;
             await Animator.Select(button)
                 .Animate(RotateTransform.AngleProperty)
-                .To(360.0, TimeSpan.FromMilliseconds(1000))
-                .WithEasing(new CubicEaseInOut())
+                    .To(360.0, TimeSpan.FromMilliseconds(1000))
+                        .WithEasing(new CubicEaseInOut())
+                    .Reset()
                 .StartAsync();
         }
 
@@ -74,18 +79,13 @@ namespace AvaloniaTweener.Demo
         {
             var button = (Button)sender!;
             
-            var scaleTask = Animator.Select(button)
+            await Animator.Select(button)
                 .Animate(ScaleTransform.ScaleXProperty)
-                .To(1.2, TimeSpan.FromMilliseconds(600))
-                .To(1.0, TimeSpan.FromMilliseconds(400))
-                .StartAsync();
-
-            var colorTask = Animator.Select(button)
+                    .To(2.0, TimeSpan.FromSeconds(1))
+                    .To(1.0, TimeSpan.FromSeconds(1))
                 .Animate(Button.BackgroundProperty)
-                .To(new SolidColorBrush(Colors.Crimson), TimeSpan.FromMilliseconds(1000))
+                    .To(new SolidColorBrush(Colors.Crimson), TimeSpan.FromMilliseconds(2000))
                 .StartAsync();
-
-            await Task.WhenAll(scaleTask, colorTask);
         }
     }
 }

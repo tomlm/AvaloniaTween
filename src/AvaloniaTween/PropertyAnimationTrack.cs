@@ -28,6 +28,9 @@ namespace AvaloniaTweener
         public Action? OnComplete { get; set; }
         public Action<double>? OnUpdate { get; set; } // progress 0-1
         public Action? OnRepeat { get; set; }
+
+        public bool RestoreOriginalValue { get; set; }
+        public object? OriginalValue { get; set; }
     }
 
     public class KeyFrameDefinition

@@ -25,7 +25,7 @@ namespace AvaloniaTweener
 
         public SelectorAnimationBuilder(IEnumerable<Visual> targets)
         {
-            _targets = targets.OfType<Visual>().ToList();
+            _targets = targets.ToList();
         }
 
         // Properties
@@ -138,6 +138,12 @@ namespace AvaloniaTweener
         {
             try
             {
+                // Capture original value if Reset() was called
+                if (track.RestoreOriginalValue)
+                {
+                    track.OriginalValue = target.GetValue(track.Property);
+                }
+
                 // Apply stagger delay
                 if (staggerDelay > TimeSpan.Zero)
                 {
@@ -168,6 +174,24 @@ namespace AvaloniaTweener
                     var keyFramesToUse = shouldReverse 
                         ? sortedKeyFrames.AsEnumerable().Reverse().ToList() 
                         : sortedKeyFrames;
+
+                    // Handle single keyframe case - automatically add a "from" keyframe
+                    if (keyFramesToUse.Count == 1)
+                    {
+                        var toKf = keyFramesToUse[0];
+                        var currentValue = target.GetValue(track.Property);
+                        
+                        // Create a "from" keyframe with the current value
+                        var fromKf = new KeyFrameDefinition
+                        {
+                            Cue = 0.0,
+                            Value = currentValue,
+                            Duration = TimeSpan.Zero
+                        };
+                        
+                        // Insert at the beginning
+                        keyFramesToUse.Insert(0, fromKf);
+                    }
 
                     // Run each segment sequentially
                     for (int i = 0; i < keyFramesToUse.Count - 1; i++)
@@ -216,6 +240,12 @@ namespace AvaloniaTweener
 
                     if (cancellationToken.IsCancellationRequested)
                         break;
+                }
+
+                // Restore original value if Reset() was called
+                if (track.RestoreOriginalValue && track.OriginalValue != null)
+                {
+                    target.SetValue(track.Property, track.OriginalValue);
                 }
 
                 track.OnComplete?.Invoke();

@@ -140,6 +140,7 @@ namespace AvaloniaTweener
         public PropertyTrackBuilder Reset()
         {
             _track.FillMode = Avalonia.Animation.FillMode.None;
+            _track.RestoreOriginalValue = true;
             return this;
         }
 
