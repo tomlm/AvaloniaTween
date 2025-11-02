@@ -130,6 +130,9 @@ namespace AvaloniaTweener.Controls
                     if (track.Repeat > 1)
                         propertyBuilder = propertyBuilder.Repeat(track.Repeat);
 
+                    if (track.RestoreOriginalValue)
+                        propertyBuilder = propertyBuilder.Reset();
+
                     propertyBuilder.Build();
                 }
                 catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException ex)
@@ -210,5 +213,10 @@ namespace AvaloniaTweener.Controls
         /// Repeat count for this track
         /// </summary>
         public int Repeat { get; set; } = 1;
+
+        /// <summary>
+        /// Whether to restore the original value after animation completes
+        /// </summary>
+        public bool RestoreOriginalValue { get; set; }
     }
 }

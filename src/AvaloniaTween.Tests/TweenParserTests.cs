@@ -209,6 +209,149 @@ namespace AvaloniaTweener.Tests
         }
 
         [Fact]
+        public void Parse_MultiTransform_WithRotationAndScale_ParsesAllTracks()
+        {
+            // Arrange - this matches the example from TweenExamples.axaml
+            var tween = "angle:0->180@800ms ease:OutBack; scalex:1->1.3@400ms; scalex:1.3->1@400ms; scaley:1->1.3@400ms; scaley:1.3->1@400ms";
+
+            // Act
+            var animation = TweenParser.Parse(tween);
+
+            // Assert
+            Assert.NotNull(animation);
+            Assert.Equal(5, animation.Tracks.Count);
+            
+            // Verify rotation track
+            var rotateTrack = animation.Tracks[0];
+            Assert.Equal(RotateTransform.AngleProperty, rotateTrack.Property);
+            Assert.Equal(0.0, rotateTrack.From);
+            Assert.Equal(180.0, rotateTrack.To);
+            Assert.Equal(TimeSpan.FromMilliseconds(800), rotateTrack.Duration);
+            Assert.IsType<BackEaseOut>(rotateTrack.Easing);
+            
+            // Verify scale X tracks (scale up then down)
+            var scaleX1 = animation.Tracks[1];
+            Assert.Equal(ScaleTransform.ScaleXProperty, scaleX1.Property);
+            Assert.Equal(1.0, scaleX1.From);
+            Assert.Equal(1.3, scaleX1.To);
+            Assert.Equal(TimeSpan.FromMilliseconds(400), scaleX1.Duration);
+            
+            var scaleX2 = animation.Tracks[2];
+            Assert.Equal(ScaleTransform.ScaleXProperty, scaleX2.Property);
+            Assert.Equal(1.3, scaleX2.From);
+            Assert.Equal(1.0, scaleX2.To);
+            Assert.Equal(TimeSpan.FromMilliseconds(400), scaleX2.Duration);
+            
+            // Verify scale Y tracks (scale up then down)
+            var scaleY1 = animation.Tracks[3];
+            Assert.Equal(ScaleTransform.ScaleYProperty, scaleY1.Property);
+            Assert.Equal(1.0, scaleY1.From);
+            Assert.Equal(1.3, scaleY1.To);
+            Assert.Equal(TimeSpan.FromMilliseconds(400), scaleY1.Duration);
+            
+            var scaleY2 = animation.Tracks[4];
+            Assert.Equal(ScaleTransform.ScaleYProperty, scaleY2.Property);
+            Assert.Equal(1.3, scaleY2.From);
+            Assert.Equal(1.0, scaleY2.To);
+            Assert.Equal(TimeSpan.FromMilliseconds(400), scaleY2.Duration);
+        }
+
+        [Fact]
+        public void Parse_AnimationWithReset_SetsRestoreOriginalValue()
+        {
+            // Arrange
+            var tween = "opacity:0->1@500ms reset";
+
+            // Act
+            var animation = TweenParser.Parse(tween);
+
+            // Assert
+            Assert.NotNull(animation);
+            Assert.Single(animation.Tracks);
+            
+            var track = animation.Tracks[0];
+            Assert.Equal(Visual.OpacityProperty, track.Property);
+            Assert.True(track.RestoreOriginalValue);
+        }
+
+        [Fact]
+        public void Parse_AnimationWithResetTrue_SetsRestoreOriginalValue()
+        {
+            // Arrange
+            var tween = "left:0->200@1s reset:true";
+
+            // Act
+            var animation = TweenParser.Parse(tween);
+
+            // Assert
+            Assert.NotNull(animation);
+            Assert.Single(animation.Tracks);
+            
+            var track = animation.Tracks[0];
+            Assert.Equal(Canvas.LeftProperty, track.Property);
+            Assert.True(track.RestoreOriginalValue);
+        }
+
+        [Fact]
+        public void Parse_AnimationWithResetFalse_DoesNotSetRestoreOriginalValue()
+        {
+            // Arrange
+            var tween = "left:0->200@1s reset:false";
+
+            // Act
+            var animation = TweenParser.Parse(tween);
+
+            // Assert
+            Assert.NotNull(animation);
+            Assert.Single(animation.Tracks);
+            
+            var track = animation.Tracks[0];
+            Assert.Equal(Canvas.LeftProperty, track.Property);
+            Assert.False(track.RestoreOriginalValue);
+        }
+
+        [Fact]
+        public void Parse_AnimationWithResetAndEasing_ParsesBoth()
+        {
+            // Arrange
+            var tween = "scalex:1->1.5@300ms ease:OutBack reset";
+
+            // Act
+            var animation = TweenParser.Parse(tween);
+
+            // Assert
+            Assert.NotNull(animation);
+            Assert.Single(animation.Tracks);
+            
+            var track = animation.Tracks[0];
+            Assert.Equal(ScaleTransform.ScaleXProperty, track.Property);
+            Assert.IsType<BackEaseOut>(track.Easing);
+            Assert.True(track.RestoreOriginalValue);
+        }
+
+        [Fact]
+        public void Parse_MultipleTracksWithReset_OnlyAffectsSpecifiedTracks()
+        {
+            // Arrange - only the second track has reset
+            var tween = "opacity:0->1@500ms; left:0->200@1s reset";
+
+            // Act
+            var animation = TweenParser.Parse(tween);
+
+            // Assert
+            Assert.NotNull(animation);
+            Assert.Equal(2, animation.Tracks.Count);
+            
+            var opacityTrack = animation.Tracks[0];
+            Assert.Equal(Visual.OpacityProperty, opacityTrack.Property);
+            Assert.False(opacityTrack.RestoreOriginalValue);
+            
+            var leftTrack = animation.Tracks[1];
+            Assert.Equal(Canvas.LeftProperty, leftTrack.Property);
+            Assert.True(leftTrack.RestoreOriginalValue);
+        }
+
+        [Fact]
         public void Parse_CanvasLeftProperty_CreatesCorrectAnimation()
         {
             // Arrange

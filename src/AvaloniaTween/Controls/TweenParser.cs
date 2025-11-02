@@ -32,18 +32,30 @@ namespace AvaloniaTweener.Controls
 
         private static AnimationTrack? ParseTrack(string trackString, Visual? target)
         {
-            // Format: "property:from->to@duration ease:easing"
+            // Format: "property:from->to@duration ease:easing reset"
             // Examples: 
             //   "opacity:0->1@500ms"
             //   "left:100->200@1s ease:OutCubic"
-            //   "opacity:0->1 ease:OutBack"
-            //   "Canvas.RightProperty:0->200@1s"
+            //   "opacity:0->1 ease:OutBack reset"
+            //   "Canvas.RightProperty:0->200@1s reset"
 
             var track = new AnimationTrack();
             var parts = trackString.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var part in parts)
             {
+                var lowerPart = part.ToLower();
+                
+                // Check for reset keyword (standalone, without colon)
+                if (lowerPart.StartsWith("reset"))
+                {
+                    if (lowerPart == "reset")   
+                        track.RestoreOriginalValue = true;
+                    else 
+                        track.RestoreOriginalValue = (lowerPart == "reset:true");
+                    continue;
+                }
+
                 if (part.Contains(':'))
                 {
                     var kvp = part.Split(':', 2);

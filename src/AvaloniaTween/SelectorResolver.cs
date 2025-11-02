@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,6 +13,12 @@ namespace AvaloniaTweener
         {
             if (string.IsNullOrWhiteSpace(selector))
                 return Enumerable.Empty<Visual>();
+
+            // Handle "Self" selector - return the root itself
+            if (selector.Equals("Self", StringComparison.OrdinalIgnoreCase))
+            {
+                return new[] { root };
+            }
 
             if (selector.StartsWith("#"))
             {
