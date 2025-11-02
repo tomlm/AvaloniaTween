@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AvaloniaTweener
+namespace AvaloniaTweener.Fluent
 {
     public static class SelectorResolver
     {

@@ -6,6 +6,8 @@ using Avalonia.Controls;
 using Avalonia.Headless;
 using Avalonia.Layout;
 using Avalonia.Media;
+using AvaloniaTweener.Fluent;
+using AvaloniaTweener.Markup;
 using Xunit;
 
 namespace AvaloniaTweener.Tests

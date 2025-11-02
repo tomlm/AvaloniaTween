@@ -3,11 +3,12 @@ using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Metadata;
+using AvaloniaTweener.Markup;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace AvaloniaTweener
+namespace AvaloniaTweener.Fluent
 {
     /// <summary>
     /// Defines an animation that can be used as a XAML resource

@@ -5,6 +5,7 @@ using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
+using AvaloniaTweener.Parser;
 using Xunit;
 
 namespace AvaloniaTweener.Tests

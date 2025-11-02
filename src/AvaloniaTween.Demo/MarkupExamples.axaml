@@ -1,0 +1,125 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:tw="using:AvaloniaTweener.Markup"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AvaloniaTweener.Demo.MarkupExamples"
+        Title="Markup Animation Examples">
+
+    <Window.Resources>
+        <!-- Example 1: Bounce animation with TranslateTransform -->
+        <tw:Animation x:Key="BounceAnimation">
+            <tw:Transform PropertyName="TranslateTransform.Y" Reset="True">
+                <tw:Animate To="-100" Duration="0:0:0.7">
+                    <tw:Animate.Easing>
+                        <QuadraticEaseOut/>
+                    </tw:Animate.Easing>
+                </tw:Animate>
+                <tw:Animate To="0" Duration="0:0:0.7">
+                    <tw:Animate.Easing>
+                        <BounceEaseOut/>
+                    </tw:Animate.Easing>
+                </tw:Animate>
+            </tw:Transform>
+        </tw:Animation>
+
+        <!-- Example 2: Color transition animation -->
+        <tw:Animation x:Key="ColorAnimation">
+            <tw:Transform PropertyName="Button.Background" Delay="0:0:0.1">
+                <tw:Animate To="Purple" Duration="0:0:0.5" />
+                <tw:Animate To="Orange" Duration="0:0:0.5" />
+                <tw:Animate To="Teal" Duration="0:0:0.5" />
+            </tw:Transform>
+        </tw:Animation>
+
+        <!-- Example 3: Scale and rotate animation -->
+        <tw:Animation x:Key="ScaleRotateAnimation">
+            <tw:Transform PropertyName="ScaleTransform.ScaleX" Reset="True">
+                <tw:Animate To="2.0" Duration="0:0:1">
+                    <tw:Animate.Easing>
+                        <BackEaseOut/>
+                    </tw:Animate.Easing>
+                </tw:Animate>
+                <tw:Animate To="1.0" Duration="0:0:1">
+                    <tw:Animate.Easing>
+                        <ElasticEaseOut/>
+                    </tw:Animate.Easing>
+                </tw:Animate>
+            </tw:Transform>
+            <tw:Transform PropertyName="RotateTransform.Angle" Reset="True">
+                <tw:Animate To="360" Duration="0:0:1">
+                    <tw:Animate.Easing>
+                        <CubicEaseInOut/>
+                    </tw:Animate.Easing>
+                </tw:Animate>
+            </tw:Transform>
+        </tw:Animation>
+
+        <!-- Example 4: Slide animation with margin -->
+        <tw:Animation x:Key="SlideAnimation">
+            <tw:Transform PropertyName="Button.Margin" Reset="True">
+                <tw:Animate To="100,0,0,0" Duration="0:0:1">
+                    <tw:Animate.Easing>
+                        <BackEaseOut/>
+                    </tw:Animate.Easing>
+                </tw:Animate>
+            </tw:Transform>
+        </tw:Animation>
+    </Window.Resources>
+
+    <StackPanel Spacing="20" Margin="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+        
+        <TextBlock Text="Click the buttons to see markup-based animations!" 
+                   FontSize="18" FontWeight="Bold" 
+                   HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+        <!-- Button 1: Bounce Animation -->
+        <Button Content="Click to Bounce" 
+                Width="200" Height="40"
+                tw:Tweener.OnClickAnimation="{StaticResource BounceAnimation}">
+            <Button.RenderTransform>
+                <TranslateTransform/>
+            </Button.RenderTransform>
+        </Button>
+
+        <!-- Button 2: Color Animation -->
+        <Button Content="Click for Color Change" 
+                Width="200" Height="40"
+                Background="LightBlue"
+                tw:Tweener.OnClickAnimation="{StaticResource ColorAnimation}"/>
+
+        <!-- Button 3: Scale and Rotate -->
+        <Button Content="Click to Scale Rotate" 
+                Width="200" Height="40"
+                RenderTransformOrigin="0.5,0.5"
+                tw:Tweener.OnClickAnimation="{StaticResource ScaleRotateAnimation}">
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <RotateTransform/>
+                </TransformGroup>
+            </Button.RenderTransform>
+        </Button>
+
+        <!-- Button 4: Slide Animation -->
+        <Button Content="Click to Slide" 
+                Width="200" Height="40"
+                tw:Tweener.OnClickAnimation="{StaticResource SlideAnimation}"/>
+
+        <!-- Button 5: OnLoad Animation Example -->
+        <Border Background="LightGreen" 
+                Padding="20" 
+                CornerRadius="10"
+                tw:Tweener.OnLoadAnimation="{StaticResource BounceAnimation}">
+            <Border.RenderTransform>
+                <TranslateTransform/>
+            </Border.RenderTransform>
+            <TextBlock Text="This animates on load!" 
+                       FontSize="16" 
+                       HorizontalAlignment="Center"/>
+        </Border>
+
+    </StackPanel>
+
+</Window>

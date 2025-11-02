@@ -1,0 +1,234 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:anim="using:AvaloniaTweener"
+        xmlns:markup="using:AvaloniaTweener.Markup"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+        x:Class="AvaloniaTweener.Demo.XamlExamples"
+        Title="XAML Static Resource Animation Examples"
+        Width="800" Height="600">
+
+    <Window.Resources>
+        
+        <!-- Animation 1: Slide with Margin -->
+        <markup:Animation x:Key="SlideAnimation">
+            <markup:Transform PropertyName="Margin">
+                <markup:Animate To="200,0,0,0" Duration="0:0:0.8">
+                    <markup:Animate.Easing>
+                        <BackEaseOut/>
+                    </markup:Animate.Easing>
+                </markup:Animate>
+            </markup:Transform>
+        </markup:Animation>
+
+        <!-- Animation 2: Bounce with TranslateTransform -->
+        <markup:Animation x:Key="BounceAnimation">
+            <markup:Transform PropertyName="TranslateTransform.Y">
+                <markup:Animate To="-50" Duration="0:0:0.4">
+                    <markup:Animate.Easing>
+                        <QuadraticEaseOut/>
+                    </markup:Animate.Easing>
+                </markup:Animate>
+                <markup:Animate To="0" Duration="0:0:0.4">
+                    <markup:Animate.Easing>
+                        <BounceEaseOut/>
+                    </markup:Animate.Easing>
+                </markup:Animate>
+            </markup:Transform>
+        </markup:Animation>
+
+        <!-- Animation 3: Scale Animation -->
+        <markup:Animation x:Key="ScaleAnimation">
+            <markup:Transform PropertyName="ScaleTransform.ScaleX">
+                <markup:Animate To="1.5" Duration="0:0:0.3">
+                    <markup:Animate.Easing>
+                        <BackEaseOut/>
+                    </markup:Animate.Easing>
+                </markup:Animate>
+                <markup:Animate To="1" Duration="0:0:0.3">
+                    <markup:Animate.Easing>
+                        <ElasticEaseOut/>
+                    </markup:Animate.Easing>
+                </markup:Animate>
+            </markup:Transform>
+            <markup:Transform PropertyName="ScaleTransform.ScaleY">
+                <markup:Animate To="1.5" Duration="0:0:0.3">
+                    <markup:Animate.Easing>
+                        <BackEaseOut/>
+                    </markup:Animate.Easing>
+                </markup:Animate>
+                <markup:Animate To="1" Duration="0:0:0.3">
+                    <markup:Animate.Easing>
+                        <ElasticEaseOut/>
+                    </markup:Animate.Easing>
+                </markup:Animate>
+            </markup:Transform>
+        </markup:Animation>
+
+        <!-- Animation 4: Rotate Animation -->
+        <markup:Animation x:Key="RotateAnimation">
+            <markup:Transform PropertyName="RotateTransform.Angle">
+                <markup:Animate To="360" Duration="0:0:1">
+                    <markup:Animate.Easing>
+                        <CubicEaseInOut/>
+                    </markup:Animate.Easing>
+                </markup:Animate>
+            </markup:Transform>
+        </markup:Animation>
+
+        <!-- Animation 5: Opacity Fade -->
+        <markup:Animation x:Key="FadeAnimation">
+            <markup:Transform PropertyName="Opacity">
+                <markup:Animate To="0" Duration="0:0:0.5">
+                    <markup:Animate.Easing>
+                        <CubicEaseOut/>
+                    </markup:Animate.Easing>
+                </markup:Animate>
+                <markup:Animate To="1" Duration="0:0:0.5">
+                    <markup:Animate.Easing>
+                        <CubicEaseIn/>
+                    </markup:Animate.Easing>
+                </markup:Animate>
+            </markup:Transform>
+        </markup:Animation>
+
+        <!-- Animation 6: Multi-transform (Rotate + Scale) -->
+        <markup:Animation x:Key="MultiTransformAnimation">
+            <markup:Transform PropertyName="RotateTransform.Angle" Reset="True">
+                <markup:Animate To="180" Duration="0:0:0.8">
+                    <markup:Animate.Easing>
+                        <BackEaseOut/>
+                    </markup:Animate.Easing>
+                </markup:Animate>
+            </markup:Transform>
+            <markup:Transform PropertyName="ScaleTransform.ScaleX">
+                <markup:Animate To="1.3" Duration="0:0:0.4">
+                    <markup:Animate.Easing>
+                        <QuadraticEaseOut/>
+                    </markup:Animate.Easing>
+                </markup:Animate>
+                <markup:Animate To="1" Duration="0:0:0.4">
+                    <markup:Animate.Easing>
+                        <QuadraticEaseIn/>
+                    </markup:Animate.Easing>
+                </markup:Animate>
+            </markup:Transform>
+            <markup:Transform PropertyName="ScaleTransform.ScaleY">
+                <markup:Animate To="1.3" Duration="0:0:0.4">
+                    <markup:Animate.Easing>
+                        <QuadraticEaseOut/>
+                    </markup:Animate.Easing>
+                </markup:Animate>
+                <markup:Animate To="1" Duration="0:0:0.4">
+                    <markup:Animate.Easing>
+                        <QuadraticEaseIn/>
+                    </markup:Animate.Easing>
+                </markup:Animate>
+            </markup:Transform>
+        </markup:Animation>
+        
+    </Window.Resources>
+
+    <ScrollViewer>
+        <StackPanel Spacing="30" Margin="40">
+            
+            <TextBlock Text="XAML Static Resource Animation Examples (Interactive)" 
+                       FontSize="24" 
+                       FontWeight="Bold"/>
+
+            <!-- Example 1: Slide animation with Margin -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="1. Slide with Margin" FontWeight="SemiBold"/>
+                <Button Content="Click to Slide Right"
+                        Background="ForestGreen"
+                        Foreground="White"
+                        Padding="20,10"
+                        HorizontalAlignment="Left"
+                        Margin="0"
+                        anim:Tweener.OnClickAnimation="{StaticResource SlideAnimation}"/>
+            </StackPanel>
+
+            <!-- Example 2: Bounce animation with TranslateTransform -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="2. Bounce with TranslateTransform" FontWeight="SemiBold"/>
+                <Button Content="Click to Bounce"
+                        Background="Crimson"
+                        Foreground="White"
+                        Padding="20,10"
+                        HorizontalAlignment="Left"
+                        RenderTransformOrigin="0.5,0.5"
+                        anim:Tweener.OnClickAnimation="{StaticResource BounceAnimation}">
+                    <Button.RenderTransform>
+                        <TranslateTransform/>
+                    </Button.RenderTransform>
+                </Button>
+            </StackPanel>
+
+            <!-- Example 3: Scale animation -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="3. Scale Animation" FontWeight="SemiBold"/>
+                <Button Content="Click to Scale"
+                        Background="Orange"
+                        Foreground="White"
+                        Padding="20,10"
+                        HorizontalAlignment="Left"
+                        RenderTransformOrigin="0.5,0.5"
+                        anim:Tweener.OnClickAnimation="{StaticResource ScaleAnimation}">
+                    <Button.RenderTransform>
+                        <ScaleTransform/>
+                    </Button.RenderTransform>
+                </Button>
+            </StackPanel>
+
+            <!-- Example 4: Rotate animation -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="4. Rotate Animation" FontWeight="SemiBold"/>
+                <Button Content="Click to Rotate"
+                        Background="Teal"
+                        Foreground="White"
+                        Padding="20,10"
+                        Width="150"
+                        HorizontalAlignment="Left"
+                        RenderTransformOrigin="0.5,0.5"
+                        anim:Tweener.OnClickAnimation="{StaticResource RotateAnimation}">
+                    <Button.RenderTransform>
+                        <RotateTransform/>
+                    </Button.RenderTransform>
+                </Button>
+            </StackPanel>
+
+            <!-- Example 5: Opacity fade -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="5. Opacity Fade" FontWeight="SemiBold"/>
+                <Button Content="Click to Fade Out and In"
+                        Background="Purple"
+                        Foreground="White"
+                        Padding="20,10"
+                        HorizontalAlignment="Left"
+                        anim:Tweener.OnClickAnimation="{StaticResource FadeAnimation}"/>
+            </StackPanel>
+
+            <!-- Example 6: Multi-transform (Rotate + Scale) -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="6. Multiple Transforms (Rotate + Scale)" FontWeight="SemiBold"/>
+                <Button Content="Click for Multi-Animation"
+                        Background="DodgerBlue"
+                        Foreground="White"
+                        Padding="20,10"
+                        HorizontalAlignment="Left"
+                        RenderTransformOrigin="0.5,0.5"
+                        anim:Tweener.OnClickAnimation="{StaticResource MultiTransformAnimation}">
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform/>
+                            <ScaleTransform/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
+            </StackPanel>
+
+        </StackPanel>
+    </ScrollViewer>
+
+</Window>

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AvaloniaTweener
+namespace AvaloniaTweener.Fluent
 {
     public class SelectorAnimationBuilder
     {
@@ -216,7 +216,7 @@ namespace AvaloniaTweener
                         {
                             Duration = segmentDuration,
                             Easing = segmentEasing,
-                            FillMode = (isLastSegment && isLastIteration) ? track.FillMode : FillMode.Forward,
+                            FillMode = isLastSegment && isLastIteration ? track.FillMode : FillMode.Forward,
                             Children =
                             {
                                 new KeyFrame

@@ -1,6 +1,6 @@
 using System;
 
-namespace AvaloniaTweener
+namespace AvaloniaTweener.Fluent
 {
     public class KeyFrameBuilder
     {

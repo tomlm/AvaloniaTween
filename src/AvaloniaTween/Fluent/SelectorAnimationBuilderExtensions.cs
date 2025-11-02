@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AvaloniaTweener
+namespace AvaloniaTweener.Fluent
 {
    
     // Extension method for playing named animations

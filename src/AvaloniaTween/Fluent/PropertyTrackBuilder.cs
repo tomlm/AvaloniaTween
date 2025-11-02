@@ -4,7 +4,7 @@ using Avalonia.Animation.Easings;
 using System;
 using System.Threading.Tasks;
 
-namespace AvaloniaTweener
+namespace AvaloniaTweener.Fluent
 {
     public class PropertyTrackBuilder
     {

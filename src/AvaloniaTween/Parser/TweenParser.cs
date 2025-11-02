@@ -3,10 +3,11 @@ using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
+using AvaloniaTweener.Fluent;
 using System;
 using System.Linq;
 
-namespace AvaloniaTweener
+namespace AvaloniaTweener.Parser
 {
     /// <summary>
     /// Parses compact tween syntax: "opacity:0->1@500ms ease:OutCubic; left:100->200@1s"

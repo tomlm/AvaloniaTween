@@ -1,10 +1,14 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
+using AvaloniaTweener.Fluent;
+using AvaloniaTweener.Parser;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace AvaloniaTweener
+namespace AvaloniaTweener.Markup
 {
     /// <summary>
     /// Attached properties for applying animations in XAML
@@ -47,6 +51,18 @@ namespace AvaloniaTweener
         public static readonly AttachedProperty<AnimationResource?> AnimationProperty =
             AvaloniaProperty.RegisterAttached<Control, AnimationResource?>("Animation", typeof(Tweener));
 
+        /// <summary>
+        /// Attach a Markup.Animation to be played on load
+        /// </summary>
+        public static readonly AttachedProperty<Animation?> OnLoadAnimationProperty =
+            AvaloniaProperty.RegisterAttached<Control, Animation?>("OnLoadAnimation", typeof(Tweener));
+
+        /// <summary>
+        /// Attach a Markup.Animation to be played on click
+        /// </summary>
+        public static readonly AttachedProperty<Animation?> OnClickAnimationProperty =
+            AvaloniaProperty.RegisterAttached<Control, Animation?>("OnClickAnimation", typeof(Tweener));
+
         static Tweener()
         {
             OnLoadResourceProperty.Changed.AddClassHandler<Control>(OnLoadResourceChanged);
@@ -54,6 +70,8 @@ namespace AvaloniaTweener
             AnimateProperty.Changed.AddClassHandler<Control>(OnAnimateChanged);
             OnClickProperty.Changed.AddClassHandler<Control>(OnClickChanged);
             OnProperty.Changed.AddClassHandler<Control>(OnEventChanged);
+            OnLoadAnimationProperty.Changed.AddClassHandler<Control>(OnLoadAnimationChanged);
+            OnClickAnimationProperty.Changed.AddClassHandler<Control>(OnClickAnimationChanged);
         }
 
         // OnLoadResource property accessors
@@ -92,6 +110,44 @@ namespace AvaloniaTweener
         public static AnimationResource? GetAnimation(Control control) => 
             control.GetValue(AnimationProperty);
 
+        // OnLoadAnimation property accessors
+        public static void SetOnLoadAnimation(Control control, Markup.Animation? value) => 
+            control.SetValue(OnLoadAnimationProperty, value);
+        public static Markup.Animation? GetOnLoadAnimation(Control control) => 
+            control.GetValue(OnLoadAnimationProperty);
+
+        // OnClickAnimation property accessors
+        public static void SetOnClickAnimation(Control control, Markup.Animation? value) => 
+            control.SetValue(OnClickAnimationProperty, value);
+        public static Markup.Animation? GetOnClickAnimation(Control control) => 
+            control.GetValue(OnClickAnimationProperty);
+
+        public static IEnumerable<Visual> Resolve(string selector, Visual root)
+        {
+            if (string.IsNullOrWhiteSpace(selector))
+                return Enumerable.Empty<Visual>();
+
+            // Handle "Self" selector - return the root itself
+            if (selector.Equals("Self", StringComparison.OrdinalIgnoreCase))
+            {
+                return new[] { root };
+            }
+
+            if (selector.StartsWith("#"))
+            {
+                var name = selector.Substring(1);
+                return root.GetVisualDescendants().Where(v => (v as Control)?.Name == name);
+            }
+
+            if (selector.StartsWith("."))
+            {
+                var className = selector.Substring(1);
+                return root.GetVisualDescendants().Where(v => v.Classes.Contains(className));
+            }
+
+            return root.GetVisualDescendants().Where(v => v.GetType().Name == selector);
+        }
+
         private static void OnLoadResourceChanged(Control control, AvaloniaPropertyChangedEventArgs e)
         {
             if (e.NewValue is AnimationResource animation)
@@ -110,7 +166,7 @@ namespace AvaloniaTweener
             {
                 control.Loaded += async (s, args) =>
                 {
-                    var builder = Tweener.Select(control.Name ?? control.GetType().Name, control);
+                    var builder = Select(control.Name ?? control.GetType().Name, control);
                     builder.Play(animationName);
                     await builder.StartAsync();
                 };
@@ -134,7 +190,7 @@ namespace AvaloniaTweener
         {
             if (e.NewValue is string tween && !string.IsNullOrEmpty(tween))
             {
-                control.AddHandler(Button.ClickEvent, async (object? sender, RoutedEventArgs args) =>
+                control.AddHandler(Button.ClickEvent, async (sender, args) =>
                 {
                     var animation = TweenParser.Parse(tween);
                     var builder = animation.Start(control);
@@ -161,6 +217,30 @@ namespace AvaloniaTweener
                         await builder.StartAsync();
                     });
                 }
+            }
+        }
+
+        private static void OnLoadAnimationChanged(Control control, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is Markup.Animation animation)
+            {
+                control.Loaded += async (s, args) =>
+                {
+                    var builder = animation.Start(control);
+                    await builder.StartAsync();
+                };
+            }
+        }
+
+        private static void OnClickAnimationChanged(Control control, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is Markup.Animation animation)
+            {
+                control.AddHandler(Button.ClickEvent, async (sender, args) =>
+                {
+                    var builder = animation.Start(control);
+                    await builder.StartAsync();
+                });
             }
         }
 

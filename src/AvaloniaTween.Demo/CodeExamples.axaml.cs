@@ -3,6 +3,7 @@ using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using AvaloniaTweener.Markup;
 using System;
 using System.Threading.Tasks;
 

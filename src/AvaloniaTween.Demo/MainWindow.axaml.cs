@@ -3,11 +3,12 @@ using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Media;
-using AvaloniaTweener;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Avalonia.Interactivity;
+using AvaloniaTweener.Markup;
+using AvaloniaTweener.Fluent;
 
 namespace AvaloniaTweener.Demo
 {

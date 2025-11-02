@@ -1,6 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:anim="using:AvaloniaTweener"
+        xmlns:tw="using:AvaloniaTweener.Markup"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -15,7 +15,7 @@
                        FontSize="24" 
                        FontWeight="Bold"/>
 
-            <!-- Example 1: Slide animation with Margin -->
+            <!-- Example 1: Slide twation with Margin -->
             <StackPanel Spacing="10">
                 <TextBlock Text="1. Slide with Margin" FontWeight="SemiBold"/>
                 <Button Content="Click to Slide Right"
@@ -24,10 +24,10 @@
                         Padding="20,10"
                         HorizontalAlignment="Left"
                         Margin="0"
-                        anim:Tweener.OnClick="margin:0->200,0,0,0@800ms ease:OutBack"/>
+                        tw:Tweener.OnClick="margin:0->200,0,0,0@800ms ease:OutBack"/>
             </StackPanel>
 
-            <!-- Example 2: Bounce animation with TranslateTransform -->
+            <!-- Example 2: Bounce twation with TranslateTransform -->
             <StackPanel Spacing="10">
                 <TextBlock Text="2. Bounce with TranslateTransform" FontWeight="SemiBold"/>
                 <Button Content="Click to Bounce"
@@ -36,14 +36,14 @@
                         Padding="20,10"
                         HorizontalAlignment="Left"
                         RenderTransformOrigin="0.5,0.5"
-                        anim:Tweener.OnClick="y:0->-50@400ms ease:OutQuad; y:-50->0@400ms ease:OutBounce">
+                        tw:Tweener.OnClick="y:0->-50@400ms ease:OutQuad; y:-50->0@400ms ease:OutBounce">
                     <Button.RenderTransform>
                         <TranslateTransform/>
                     </Button.RenderTransform>
                 </Button>
             </StackPanel>
 
-            <!-- Example 3: Scale animation -->
+            <!-- Example 3: Scale twation -->
             <StackPanel Spacing="10">
                 <TextBlock Text="3. Scale Animation" FontWeight="SemiBold"/>
                 <Button Content="Click to Scale"
@@ -52,14 +52,14 @@
                         Padding="20,10"
                         HorizontalAlignment="Left"
                         RenderTransformOrigin="0.5,0.5"
-                        anim:Tweener.OnClick="scalex:1->1.5@300ms ease:OutBack; scalex:1.5->1@300ms ease:OutElastic; scaley:1->1.5@300ms ease:OutBack; scaley:1.5->1@300ms ease:OutElastic">
+                        tw:Tweener.OnClick="scalex:1->1.5@300ms ease:OutBack; scalex:1.5->1@300ms ease:OutElastic; scaley:1->1.5@300ms ease:OutBack; scaley:1.5->1@300ms ease:OutElastic">
                     <Button.RenderTransform>
                         <ScaleTransform/>
                     </Button.RenderTransform>
                 </Button>
             </StackPanel>
 
-            <!-- Example 4: Rotate animation -->
+            <!-- Example 4: Rotate twation -->
             <StackPanel Spacing="10">
                 <TextBlock Text="4. Rotate Animation" FontWeight="SemiBold"/>
                 <Button Content="Click to Rotate"
@@ -69,7 +69,7 @@
                         Width="150"
                         HorizontalAlignment="Left"
                         RenderTransformOrigin="0.5,0.5"
-                        anim:Tweener.OnClick="angle:0->360@1s ease:InOutCubic">
+                        tw:Tweener.OnClick="angle:0->360@1s ease:InOutCubic">
                     <Button.RenderTransform>
                         <RotateTransform/>
                     </Button.RenderTransform>
@@ -84,7 +84,7 @@
                         Foreground="White"
                         Padding="20,10"
                         HorizontalAlignment="Left"
-                        anim:Tweener.OnClick="opacity:1->0@500ms ease:OutCubic; opacity:0->1@500ms ease:InCubic"/>
+                        tw:Tweener.OnClick="opacity:1->0@500ms ease:OutCubic; opacity:0->1@500ms ease:InCubic"/>
             </StackPanel>
 
             <!-- Example 6: Multi-transform (Rotate + Scale) -->
@@ -96,7 +96,7 @@
                         Padding="20,10"
                         HorizontalAlignment="Left"
                         RenderTransformOrigin="0.5,0.5"
-                        anim:Tweener.OnClick="angle:0->180@800ms ease:OutBack reset; scalex:1->1.3@400ms; scalex:1.3->1@400ms; scaley:1->1.3@400ms; scaley:1.3->1@400ms;">
+                        tw:Tweener.OnClick="angle:0->180@800ms ease:OutBack reset; scalex:1->1.3@400ms; scalex:1.3->1@400ms; scaley:1->1.3@400ms; scaley:1.3->1@400ms;">
                     <Button.RenderTransform>
                         <TransformGroup>
                             <RotateTransform/>
