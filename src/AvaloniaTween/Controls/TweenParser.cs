@@ -13,7 +13,7 @@ namespace AvaloniaTweener.Controls
     /// </summary>
     public static class TweenParser
     {
-        public static AnimationResource Parse(string tween)
+        public static AnimationResource Parse(string tween, Visual? target = null)
         {
             var animation = new AnimationResource { Selector = "Self" };
 
@@ -22,7 +22,7 @@ namespace AvaloniaTweener.Controls
 
             foreach (var trackString in trackStrings)
             {
-                var track = ParseTrack(trackString.Trim());
+                var track = ParseTrack(trackString.Trim(), target);
                 if (track != null)
                     animation.Tracks.Add(track);
             }
@@ -30,13 +30,14 @@ namespace AvaloniaTweener.Controls
             return animation;
         }
 
-        private static AnimationTrack? ParseTrack(string trackString)
+        private static AnimationTrack? ParseTrack(string trackString, Visual? target)
         {
             // Format: "property:from->to@duration ease:easing"
             // Examples: 
             //   "opacity:0->1@500ms"
             //   "left:100->200@1s ease:OutCubic"
             //   "opacity:0->1 ease:OutBack"
+            //   "Canvas.RightProperty:0->200@1s"
 
             var track = new AnimationTrack();
             var parts = trackString.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -46,10 +47,11 @@ namespace AvaloniaTweener.Controls
                 if (part.Contains(':'))
                 {
                     var kvp = part.Split(':', 2);
-                    var key = kvp[0].ToLower();
+                    var key = kvp[0];
                     var value = kvp[1];
+                    var keyLower = key.ToLower();
 
-                    switch (key)
+                    switch (keyLower)
                     {
                         case "ease":
                         case "easing":
@@ -63,8 +65,8 @@ namespace AvaloniaTweener.Controls
                             break;
                         default:
                             // Assume it's a property animation
-                            track.Property = ParseProperty(key);
-                            ParseValues(value, track);
+                            track.Property = ParseProperty(key, target);
+                            ParseValues(value, track, track.Property);
                             break;
                     }
                 }
@@ -73,7 +75,7 @@ namespace AvaloniaTweener.Controls
             return track.Property != null ? track : null;
         }
 
-        private static void ParseValues(string value, AnimationTrack track)
+        private static void ParseValues(string value, AnimationTrack track, AvaloniaProperty property)
         {
             // Format: "from->to@duration" or "from->to" or "to"
             var parts = value.Split("@", StringSplitOptions.RemoveEmptyEntries);
@@ -85,43 +87,220 @@ namespace AvaloniaTweener.Controls
             if (valuePart.Contains("->"))
             {
                 var values = valuePart.Split("->", StringSplitOptions.RemoveEmptyEntries);
-                track.From = ParseValue(values[0]);
-                track.To = ParseValue(values[1]);
+                track.From = ParseValue(values[0], property.PropertyType);
+                track.To = ParseValue(values[1], property.PropertyType);
             }
             else
             {
-                track.To = ParseValue(valuePart);
+                track.To = ParseValue(valuePart, property.PropertyType);
             }
         }
 
-        private static AvaloniaProperty ParseProperty(string propertyName)
+        private static AvaloniaProperty ParseProperty(string propertyName, Visual? target)
         {
-            // Map common property names
-            return propertyName.ToLower() switch
+            // Check if it's a fully qualified property name like "Canvas.RightProperty"
+            if (propertyName.Contains('.'))
             {
-                "opacity" => Visual.OpacityProperty,
-                "left" => Canvas.LeftProperty,
-                "top" => Canvas.TopProperty,
-                "width" => Layoutable.WidthProperty,
-                "height" => Layoutable.HeightProperty,
-                "angle" => RotateTransform.AngleProperty,
-                "scalex" => ScaleTransform.ScaleXProperty,
-                "scaley" => ScaleTransform.ScaleYProperty,
-                "scale" => ScaleTransform.ScaleXProperty, // Will need special handling for both X and Y
-                "x" => TranslateTransform.XProperty,
-                "y" => TranslateTransform.YProperty,
-                _ => throw new ArgumentException($"Unknown property: {propertyName}")
-            };
+                var parts = propertyName.Split('.');
+                if (parts.Length == 2)
+                {
+                    var typeName = parts[0];
+                    var propName = parts[1];
+                    
+                    // Try to find the type in common namespaces
+                    var potentialTypes = new[]
+                    {
+                        $"Avalonia.Controls.{typeName}",
+                        $"Avalonia.{typeName}",
+                        $"Avalonia.Layout.{typeName}",
+                        $"Avalonia.Media.{typeName}",
+                        typeName // In case it's already fully qualified
+                    };
+
+                    foreach (var fullTypeName in potentialTypes)
+                    {
+                        var type = Type.GetType($"{fullTypeName}, Avalonia.Controls") 
+                            ?? Type.GetType($"{fullTypeName}, Avalonia.Base")
+                            ?? Type.GetType($"{fullTypeName}, Avalonia.Visuals");
+                        
+                        if (type != null)
+                        {
+                            var propertyField = type.GetField(propName,
+                                System.Reflection.BindingFlags.Public |
+                                System.Reflection.BindingFlags.Static);
+
+                            if (propertyField != null && propertyField.GetValue(null) is AvaloniaProperty avaloniaProperty)
+                                return avaloniaProperty;
+                        }
+                    }
+                }
+            }
+
+            var lowerName = propertyName.ToLower();
+
+            // Try common shorthand names first
+            AvaloniaProperty? property = null;
+            switch (lowerName)
+            {
+                case "opacity":
+                    property = Visual.OpacityProperty;
+                    break;
+                case "left":
+                    property = Canvas.LeftProperty;
+                    break;
+                case "top":
+                    property = Canvas.TopProperty;
+                    break;
+                case "right":
+                    property = Canvas.RightProperty;
+                    break;
+                case "bottom":
+                    property = Canvas.BottomProperty;
+                    break;
+                case "width":
+                    property = Layoutable.WidthProperty;
+                    break;
+                case "height":
+                    property = Layoutable.HeightProperty;
+                    break;
+                case "minwidth":
+                    property = Layoutable.MinWidthProperty;
+                    break;
+                case "minheight":
+                    property = Layoutable.MinHeightProperty;
+                    break;
+                case "maxwidth":
+                    property = Layoutable.MaxWidthProperty;
+                    break;
+                case "maxheight":
+                    property = Layoutable.MaxHeightProperty;
+                    break;
+                case "margin":
+                    property = Layoutable.MarginProperty;
+                    break;
+                case "angle":
+                    property = RotateTransform.AngleProperty;
+                    break;
+                case "scalex":
+                    property = ScaleTransform.ScaleXProperty;
+                    break;
+                case "scaley":
+                    property = ScaleTransform.ScaleYProperty;
+                    break;
+                case "scale":
+                    property = ScaleTransform.ScaleXProperty;
+                    break;
+                case "x":
+                    property = TranslateTransform.XProperty;
+                    break;
+                case "y":
+                    property = TranslateTransform.YProperty;
+                    break;
+                case "skewx":
+                    property = SkewTransform.AngleXProperty;
+                    break;
+                case "skewy":
+                    property = SkewTransform.AngleYProperty;
+                    break;
+                default:
+                    property = null;
+                    break;
+            }
+
+            if (property != null)
+                return property;
+
+            // If we have a target, try to find the property on it
+            if (target != null)
+            {
+                var targetType = target.GetType();
+
+                // Try to find an AvaloniaProperty by name (try different casings)
+                var propertyFieldName = ToPascalCase(propertyName) + "Property";
+                var propertyField = targetType.GetField(propertyFieldName,
+                    System.Reflection.BindingFlags.Public |
+                    System.Reflection.BindingFlags.Static |
+                    System.Reflection.BindingFlags.FlattenHierarchy);
+
+                if (propertyField != null && propertyField.GetValue(null) is AvaloniaProperty avaloniaProperty)
+                    return avaloniaProperty;
+
+                // Try attached properties from common types
+                var attachedPropertyTypes = new[]
+                {
+                    typeof(Canvas),
+                    typeof(Grid),
+                    typeof(DockPanel),
+                    typeof(RelativePanel)
+                };
+
+                foreach (var attachedType in attachedPropertyTypes)
+                {
+                    var attachedField = attachedType.GetField(propertyFieldName,
+                        System.Reflection.BindingFlags.Public |
+                        System.Reflection.BindingFlags.Static);
+
+                    if (attachedField != null && attachedField.GetValue(null) is AvaloniaProperty attachedProperty)
+                        return attachedProperty;
+                }
+            }
+
+            throw new ArgumentException($"Unknown property: {propertyName}");
         }
 
-        private static object ParseValue(string value)
+        private static string ToPascalCase(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return input;
+            
+            // Convert first character to uppercase
+            return char.ToUpper(input[0]) + input.Substring(1);
+        }
+
+        private static object ParseValue(string value, Type propertyType)
         {
             value = value.Trim();
-            
-            if (double.TryParse(value, out var doubleValue))
-                return doubleValue;
 
-            throw new ArgumentException($"Cannot parse value: {value}");
+            // Handle Thickness (margin, padding)
+            if (propertyType == typeof(Thickness))
+            {
+                var parts = value.Split(',');
+                if (parts.Length == 1 && double.TryParse(parts[0], out var uniform))
+                    return new Thickness(uniform);
+                if (parts.Length == 2 && double.TryParse(parts[0], out var horizontal) && double.TryParse(parts[1], out var vertical))
+                    return new Thickness(horizontal, vertical);
+                if (parts.Length == 4 && 
+                    double.TryParse(parts[0], out var left) && 
+                    double.TryParse(parts[1], out var top) &&
+                    double.TryParse(parts[2], out var right) &&
+                    double.TryParse(parts[3], out var bottom))
+                    return new Thickness(left, top, right, bottom);
+            }
+
+            // Handle double/int
+            if (propertyType == typeof(double) || propertyType == typeof(int) || propertyType == typeof(float))
+            {
+                if (double.TryParse(value, out var doubleValue))
+                    return propertyType == typeof(int) ? (int)doubleValue : doubleValue;
+            }
+
+            // Handle Color
+            if (propertyType == typeof(Color))
+            {
+                return Color.Parse(value);
+            }
+
+            // Handle SolidColorBrush
+            if (propertyType == typeof(IBrush) || propertyType == typeof(SolidColorBrush))
+            {
+                return new SolidColorBrush(Color.Parse(value));
+            }
+
+            // Default: try double
+            if (double.TryParse(value, out var fallbackValue))
+                return fallbackValue;
+
+            throw new ArgumentException($"Cannot parse value: {value} for type {propertyType.Name}");
         }
 
         private static TimeSpan ParseTimeSpan(string value)

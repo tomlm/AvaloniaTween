@@ -5,109 +5,105 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="AvaloniaTweener.Demo.TweenExamples"
-        Title="XAML Animation Examples"
+        Title="Tween Animation Examples"
         Width="800" Height="600">
 
     <ScrollViewer>
         <StackPanel Spacing="30" Margin="40">
             
-            <TextBlock Text="XAML Animation Examples (Static - On Load)" 
+            <TextBlock Text="Tween Animation Examples (Interactive)" 
                        FontSize="24" 
                        FontWeight="Bold"/>
 
-            <!-- Example 1: Compact inline syntax -->
+            <!-- Example 1: Slide animation with Margin -->
             <StackPanel Spacing="10">
-                <TextBlock Text="1. Compact Inline Syntax (Fade In)" FontWeight="SemiBold"/>
-                <Border Background="ForestGreen" 
-                        Padding="20" 
-                        CornerRadius="8"
-                        anim:Reanimator.OnClick="opacity:0->1@1s ease:OutCubic">
-                    <TextBlock Text="Compact syntax animation!" 
-                               Foreground="White" 
-                               HorizontalAlignment="Center"/>
-                </Border>
+                <TextBlock Text="1. Slide with Margin" FontWeight="SemiBold"/>
+                <Button Content="Click to Slide Right"
+                        Background="ForestGreen"
+                        Foreground="White"
+                        Padding="20,10"
+                        HorizontalAlignment="Left"
+                        Margin="0"
+                        anim:Reanimator.OnClick="margin:0->200,0,0,0@800ms ease:OutBack"/>
             </StackPanel>
 
-            <!-- Example 2: Play named animation on load -->
+            <!-- Example 2: Bounce animation with TranslateTransform -->
             <StackPanel Spacing="10">
-                <TextBlock Text="2. Named Animation (OnLoad)" FontWeight="SemiBold"/>
-                <Border Background="Crimson" 
-                        Padding="20" 
-                        CornerRadius="8"
-                        anim:Reanimator.OnClick="fadeIn">
-                    <TextBlock Text="Playing named 'fadeIn' animation" 
-                               Foreground="White" 
-                               HorizontalAlignment="Center"/>
-                </Border>
+                <TextBlock Text="2. Bounce with TranslateTransform" FontWeight="SemiBold"/>
+                <Button Content="Click to Bounce"
+                        Background="Crimson"
+                        Foreground="White"
+                        Padding="20,10"
+                        HorizontalAlignment="Left"
+                        RenderTransformOrigin="0.5,0.5"
+                        anim:Reanimator.OnClick="y:0->-50@400ms ease:OutQuad; y:-50->0@400ms ease:OutBounce">
+                    <Button.RenderTransform>
+                        <TranslateTransform/>
+                    </Button.RenderTransform>
+                </Button>
             </StackPanel>
 
-            <!-- Example 3: Multiple properties inline -->
+            <!-- Example 3: Scale animation -->
             <StackPanel Spacing="10">
-                <TextBlock Text="3. Multiple Properties Inline (Slide + Fade)" FontWeight="SemiBold"/>
-                <Canvas Height="100" Background="Transparent">
-                    <Border Background="Orange" 
-                            Padding="20" 
-                            CornerRadius="8"
-                            Canvas.Left="0"
-                            Canvas.Top="0"
-                            anim:Reanimator.OnClick="left:0->300@1s ease:OutElastic; opacity:0->1@1s">
-                        <TextBlock Text="Slide and fade!" 
-                                   Foreground="White"/>
-                    </Border>
-                </Canvas>
+                <TextBlock Text="3. Scale Animation" FontWeight="SemiBold"/>
+                <Button Content="Click to Scale"
+                        Background="Orange"
+                        Foreground="White"
+                        Padding="20,10"
+                        HorizontalAlignment="Left"
+                        RenderTransformOrigin="0.5,0.5"
+                        anim:Reanimator.OnClick="scalex:1->1.5@300ms ease:OutBack; scalex:1.5->1@300ms ease:OutElastic; scaley:1->1.5@300ms ease:OutBack; scaley:1.5->1@300ms ease:OutElastic">
+                    <Button.RenderTransform>
+                        <ScaleTransform/>
+                    </Button.RenderTransform>
+                </Button>
             </StackPanel>
 
-            <!-- Example 4: Scale animation -->
+            <!-- Example 4: Rotate animation -->
             <StackPanel Spacing="10">
-                <TextBlock Text="4. Scale Animation" FontWeight="SemiBold"/>
-                <Border Background="Teal" 
-                        Padding="20" 
-                        CornerRadius="8"
+                <TextBlock Text="4. Rotate Animation" FontWeight="SemiBold"/>
+                <Button Content="Click to Rotate"
+                        Background="Teal"
+                        Foreground="White"
+                        Padding="20,10"
                         Width="150"
                         HorizontalAlignment="Left"
-                        anim:Reanimator.OnClick="opacity:0->1@1600ms; scalex:0.5->1@600ms ease:OutBack; scaley:0.5->1@600ms ease:OutBack"
-                        RenderTransformOrigin="0.5,0.5">
-                    <Border.RenderTransform>
-                        <ScaleTransform/>
-                    </Border.RenderTransform>
-                    <TextBlock Text="Multi-property!" 
-                               Foreground="White" 
-                               HorizontalAlignment="Center"/>
-                </Border>
-            </StackPanel>
-
-            <!-- Example 5: Rotate animation -->
-            <StackPanel Spacing="10">
-                <TextBlock Text="5. Rotate Animation" FontWeight="SemiBold"/>
-                <Border Background="Purple" 
-                        Padding="20" 
-                        CornerRadius="8"
-                        Width="100"
-                        Height="100"
-                        HorizontalAlignment="Left"
-                        anim:Reanimator.OnClick="angle:0->360@2s ease:Linear; opacity:0->1@500ms"
-                        RenderTransformOrigin="0.5,0.5">
-                    <Border.RenderTransform>
+                        RenderTransformOrigin="0.5,0.5"
+                        anim:Reanimator.OnClick="angle:0->360@1s ease:InOutCubic">
+                    <Button.RenderTransform>
                         <RotateTransform/>
-                    </Border.RenderTransform>
-                    <TextBlock Text="Spin!" 
-                               Foreground="White" 
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"/>
-                </Border>
+                    </Button.RenderTransform>
+                </Button>
             </StackPanel>
 
-            <!-- Example 6: Delayed animation -->
+            <!-- Example 5: Opacity fade -->
             <StackPanel Spacing="10">
-                <TextBlock Text="6. With Delay" FontWeight="SemiBold"/>
-                <Border Background="DodgerBlue" 
-                        Padding="20" 
-                        CornerRadius="8"
-                        anim:Reanimator.OnClick="opacity:0->1@1s delay:1s">
-                    <TextBlock Text="I appear after 1 second!" 
-                               Foreground="White" 
-                               HorizontalAlignment="Center"/>
-                </Border>
+                <TextBlock Text="5. Opacity Fade" FontWeight="SemiBold"/>
+                <Button Content="Click to Fade Out and In"
+                        Background="Purple"
+                        Foreground="White"
+                        Padding="20,10"
+                        HorizontalAlignment="Left"
+                        anim:Reanimator.OnClick="opacity:1->0@500ms ease:OutCubic; opacity:0->1@500ms ease:InCubic"/>
+            </StackPanel>
+
+            <!-- Example 6: Multi-transform (Rotate + Scale) -->
+            <StackPanel Spacing="10">
+                <TextBlock Text="6. Multiple Transforms (Rotate + Scale)" FontWeight="SemiBold"/>
+                <Button Content="Click for Multi-Animation"
+                        Background="DodgerBlue"
+                        Foreground="White"
+                        Padding="20,10"
+                        HorizontalAlignment="Left"
+                        RenderTransformOrigin="0.5,0.5"
+                        anim:Reanimator.OnClick="angle:0->180@800ms ease:OutBack; scalex:1->1.3@400ms; scalex:1.3->1@400ms; scaley:1->1.3@400ms; scaley:1.3->1@400ms">
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform/>
+                            <ScaleTransform/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
             </StackPanel>
 
         </StackPanel>
