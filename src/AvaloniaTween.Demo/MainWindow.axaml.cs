@@ -1,8 +1,11 @@
+﻿using Avalonia;
 using Avalonia.Animation;
+using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Media;
 using AvaloniaAnimate;
 using System;
+using System.Threading.Tasks;
 
 namespace AvaloniaTween.Demo
 {
@@ -36,11 +39,14 @@ namespace AvaloniaTween.Demo
             var tb = Animator.Select("TextBlock", this)
                 .Animate(Canvas.LeftProperty)
                     .From(50.0)
-                    .To(300.0, TimeSpan.FromSeconds(1), 0.5)    // Move to 300 over 1 second at 50%
-                    .To(200.0, TimeSpan.FromSeconds(1))         // Move to 200 at 100%
+                    .To(300.0, TimeSpan.FromSeconds(1), 0.5)
+                        .WithEasing(new ElasticEaseOut())  // Very springy! 🎯
+                    .To(200.0, TimeSpan.FromSeconds(1))
+                        .WithEasing(new BounceEaseOut())   // Bouncy landing!
                 .Animate(RotateTransform.AngleProperty)
                     .From(0.0)
-                    .To(300.0, TimeSpan.FromSeconds(3))
+                    .To(360.0, TimeSpan.FromSeconds(2))
+                        .WithEasing(new BackEaseOut())     // Slight overshoot
                     .Reset();
 
             _ = tb.StartAsync();

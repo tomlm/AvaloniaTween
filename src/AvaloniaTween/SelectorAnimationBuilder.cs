@@ -35,6 +35,7 @@ namespace AvaloniaAnimate
 
             foreach (var target in _targets)
             {
+                // Group tracks - run different properties in parallel
                 foreach (var track in _tracks)
                 {
                     if (!track.UseKeyFrames)
@@ -44,37 +45,48 @@ namespace AvaloniaAnimate
 
                     // Sort keyframes by cue
                     var sortedKeyFrames = track.KeyFrames!.OrderBy(kf => kf.Cue).ToList();
-                    
-                    // Calculate total duration from segments
-                    var totalDuration = sortedKeyFrames
-                        .Where(kf => kf.Duration.HasValue)
-                        .Select(kf => kf.Duration!.Value)
-                        .Aggregate(TimeSpan.Zero, (sum, d) => sum + d);
 
-                    if (totalDuration == TimeSpan.Zero)
-                        totalDuration = track.Duration; // Fallback to track duration
-
-                    var animation = new Animation
-                    {
-                        Duration = totalDuration,
-                        FillMode = track.FillMode
-                    };
-
-                    // Add keyframes
-                    foreach (var kf in sortedKeyFrames)
-                    {
-                        animation.Children.Add(new KeyFrame
-                        {
-                            Cue = new Cue(kf.Cue),
-                            Setters = { new Setter(track.Property, kf.Value) }
-                        });
-                    }
-
-                    tasks.Add(animation.RunAsync(target, _cancellationTokenSource.Token));
+                    // Run segments sequentially for this track
+                    tasks.Add(RunTrackAsync(target, track, sortedKeyFrames, _cancellationTokenSource.Token));
                 }
             }
 
             await Task.WhenAll(tasks);
+        }
+
+        private async Task RunTrackAsync(Visual target, PropertyAnimationTrack track, List<KeyFrameDefinition> sortedKeyFrames, CancellationToken cancellationToken)
+        {
+            // Run each segment sequentially
+            for (int i = 0; i < sortedKeyFrames.Count - 1; i++)
+            {
+                var fromKf = sortedKeyFrames[i];
+                var toKf = sortedKeyFrames[i + 1];
+
+                var segmentDuration = toKf.Duration ?? TimeSpan.FromSeconds(1);
+                var segmentEasing = toKf.Easing ?? new LinearEasing();
+
+                var animation = new Animation
+                {
+                    Duration = segmentDuration,
+                    Easing = segmentEasing,
+                    FillMode = (i == sortedKeyFrames.Count - 2) ? track.FillMode : FillMode.Forward,
+                    Children =
+                    {
+                        new KeyFrame
+                        {
+                            Cue = new Cue(0d),
+                            Setters = { new Setter(track.Property, fromKf.Value) }
+                        },
+                        new KeyFrame
+                        {
+                            Cue = new Cue(1d),
+                            Setters = { new Setter(track.Property, toKf.Value) }
+                        }
+                    }
+                };
+
+                await animation.RunAsync(target, cancellationToken);
+            }
         }
 
         public void Stop()
